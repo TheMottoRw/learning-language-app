@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="3dp">
+
+    <TextView
+        android:id="@+id/tvId"
+        style="@style/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:text="Management info"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/lnyLayout"
+        android:padding="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/baseline_stairs_24"/>
+
+        <TextView
+            android:id="@+id/tvChange"
+            style="@style/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="10dp"
+            android:text="Level 1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_green"
+        />
+</LinearLayout>

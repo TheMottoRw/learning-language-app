@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Learn</string>
+    <string name="learn_kinyarwanda">Learn Kinyarwanda</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="name">Full name</string>
+    <string name="create_account">Create account</string>
+    <string name="signup">Sign up</string>
+    <string name="greetings">Greetings</string>
+    <string name="numbers">Numbers</string>
+    <string name="colors">Colors</string>
+    <string name="upload_module_icon">Upload module icon</string>
+    <string name="level">Level</string>
+    <string name="module_name">Module name</string>
+    <string name="create_module">Create new module</string>
+    <string name="create">Create</string>
+    <string name="goto_login">Already have an account? Login</string>
+    <string name="goto_signup">Doesn\'t have an account? Signup</string>
+    <string name="learners">Learners</string>
+    <string name="levels">Levels</string>
+    <string name="modules">Modules</string>
+    <string name="logout">Logout</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

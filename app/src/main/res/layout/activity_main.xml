@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.learningplatform.MainActivity">
+    tools:context="com.example.learningplatform.ContentActivity"
+    android:id="@+id/container"
+    android:padding="20dp">
 
     <ExpandableListView
         android:id="@+id/expandableListView"
@@ -14,5 +16,27 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
         />
+    <LinearLayout
+        android:id="@+id/lnyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/imgNoContent"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/baseline_error_outline_24"/>
+        <TextView
+            android:id="@+id/tvNoContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No content found"
+            android:textSize="30sp"
+            android:textColor="@color/dark_orange"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

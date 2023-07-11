@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateAccountActivity"
+    android:orientation="vertical"
+    >
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:visibility="gone">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/splashscreen"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/baseline_menu_book_24"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/learn_kinyarwanda"
+            android:textAllCaps="true"
+            android:visibility="visible"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@drawable/top_round_container"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_account"
+            style="@style/header"
+            android:gravity="center" />
+        <EditText
+            android:id="@+id/name"
+            android:hint="@string/name"
+            android:layout_marginTop="40dp"
+            style="@style/edit_text_style"/>
+        <EditText
+            android:id="@+id/email"
+            android:hint="@string/email"
+            android:layout_marginTop="15dp"
+            style="@style/edit_text_style"
+            android:inputType="textEmailAddress"/>
+        <EditText
+            android:id="@+id/password"
+            android:hint="@string/password"
+            android:layout_marginTop="15dp"
+            style="@style/edit_text_style"
+            android:inputType="textPassword"/>
+        <TextView
+            android:id="@+id/gotologin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/goto_login"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/text_color"
+            android:layout_marginTop="7dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreate"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/signup"
+            android:layout_marginTop="8dp"
+            android:textSize="20sp"
+            android:backgroundTint="@color/button_green"
+            app:cornerRadius="10dp"
+            android:layout_gravity="center"
+            android:paddingVertical="15dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
