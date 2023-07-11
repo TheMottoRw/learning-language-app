@@ -87,7 +87,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.MyViewHold
             super(lny);
             lnlayout = lny.findViewById(R.id.lnyLayout);
             id = lny.findViewById(R.id.tvId);
-            name = lny.findViewById(R.id.tvChange);
+            name = lny.findViewById(R.id.tvLevel);
 
         }
     }

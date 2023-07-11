@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class AdminActivity extends AppCompatActivity {
+    private FloatingActionButton fab;
 
     private BottomNavigationView navigationView;
 
@@ -25,6 +26,13 @@ public class AdminActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_admin);
         navigationView = findViewById(R.id.navigation);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminActivity.this,AddLevel.class));
+            }
+        });
         getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, new LearnersFragment()).commit();
 
 
@@ -34,10 +42,12 @@ public class AdminActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if(itemId==R.id.action_learners){
                     navigationView.getMenu().getItem(0).setChecked(true);
+                    fab.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LearnersFragment()).commit();
                 }
                 if(itemId==R.id.action_levels){
                     navigationView.getMenu().getItem(1).setChecked(true);
+                    fab.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LevelsFragment()).commit();
                 }
                 if (itemId == R.id.action_logout) {

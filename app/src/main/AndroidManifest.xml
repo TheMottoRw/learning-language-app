@@ -17,9 +17,11 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
+            android:name="com.example.learningplatform.AddLevel"
+            android:exported="false" />
+        <activity
             android:name="com.example.learningplatform.AdminActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true"/>
         <activity
             android:name="com.example.learningplatform.AddModuleActivity"
             android:exported="true" />
@@ -31,20 +33,22 @@
             android:exported="true" />
         <activity
             android:name="com.example.learningplatform.CreateAccountActivity"
+            android:exported="true"/>
+        <activity
+            android:name="com.example.learningplatform.Splash"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.learningplatform.ContentActivity"
             android:exported="true" />
         <activity
             android:name="com.example.learningplatform.Login"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
+            android:exported="true"/>
     </application>
 
 </manifest>

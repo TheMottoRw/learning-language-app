@@ -1,17 +1,13 @@
 package com.example.learningplatform;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,47 +17,40 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.learn.R;
+import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LevelsFragment extends Fragment {
-    private Context context;
-    private LinearLayoutManager lnyManager;
-    private RecyclerView recyclerView;
+public class AddLevel extends AppCompatActivity {
     private ProgressDialog pgdialog;
-
-    public LevelsFragment() {
-        // Required empty public constructor
-    }
+    private EditText edtLevel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_levels, container, false);
-        context = view.getContext();
-        lnyManager = new LinearLayoutManager(context);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(lnyManager);
-        pgdialog = new ProgressDialog(context);
-        pgdialog.setMessage("Loading data...");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_level);
+        pgdialog = new ProgressDialog(this);
+        pgdialog.setMessage("Saving data...");
         pgdialog.setCancelable(false);
-        loadLevels();
-        return view;
+        edtLevel = findViewById(R.id.edtLevel);
     }
-
-    private void loadLevels() {
-        final String url = Utils.host + "/levels";
-        pgdialog.show();
+    private void save() {
+        final String url = Utils.host + "/level";
+        JSONObject body = new JSONObject();
         Log.d("URL", url);
-//        tvLoggingIn.setVisibility(View.VISIBLE);
-        RequestQueue queue = Volley.newRequestQueue(context);
+        pgdialog.show();
+        try{
+            body.put("name",edtLevel.getText().toString().trim());
+        }catch (JSONException ex){
+            Log.d("JSONErr",ex.getMessage());
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
 // prepare the Request
-        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -69,11 +58,8 @@ public class LevelsFragment extends Fragment {
                         pgdialog.dismiss();
                         Log.d("Logresp", response);
                         try {
-                            JSONArray arr = new JSONArray(response);
-                            if (arr.length() > 0) {
-                                LevelsAdapter adapter = new LevelsAdapter(context, arr);
-                                recyclerView.setAdapter(adapter);
-                            }
+                            JSONObject obj = new JSONObject(response);
+                            Snackbar.make(edtLevel,obj.getString("message"), Snackbar.LENGTH_SHORT).show();
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
@@ -83,7 +69,7 @@ public class LevelsFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddLevel.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }
@@ -91,6 +77,7 @@ public class LevelsFragment extends Fragment {
             @Override
             public Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+
                 return params;
             }
 
@@ -98,6 +85,14 @@ public class LevelsFragment extends Fragment {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 final Map<String, String> headers = new HashMap<>();
                 return headers;
+            }
+            @Override
+            public byte[] getBody() {
+                return body.toString().getBytes();
+            }
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
             }
         };
         ;

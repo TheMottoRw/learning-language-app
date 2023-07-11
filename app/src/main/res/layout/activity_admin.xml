@@ -40,7 +40,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="60dp"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

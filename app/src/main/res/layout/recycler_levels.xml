@@ -30,7 +30,7 @@
             android:src="@drawable/baseline_stairs_24"/>
 
         <TextView
-            android:id="@+id/tvChange"
+            android:id="@+id/tvLevel"
             style="@style/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
