@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.learningplatform.AddLevel"
+    tools:context=".Login"
     android:orientation="vertical"
     >
     <LinearLayout
-        android:id="@+id/logoHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
-        android:layout_marginTop="60dp">
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/splashscreen"
@@ -40,20 +38,25 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="@drawable/top_round_container"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="0dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_level"
+            android:text="@string/new_word"
             style="@style/header"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="24sp"/>
         <EditText
-            android:id="@+id/edtLevel"
-            style="@style/edit_text_style"
-            android:hint="@string/level_name"
-            android:layout_marginTop="20dp"
-            />
+            android:id="@+id/edtEngWord"
+            android:hint="@string/eng_word"
+            android:layout_marginTop="30dp"
+            style="@style/edit_text_style"/>
+        <EditText
+            android:id="@+id/edtKinyWord"
+            android:hint="@string/kiny_word"
+            android:layout_marginTop="30dp"
+            style="@style/edit_text_style"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreate"
             android:layout_width="250dp"

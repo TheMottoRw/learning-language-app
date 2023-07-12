@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.learningplatform.ModulesActivity"
-    android:orientation="vertical">
-<GridView
-    android:id="@+id/gridView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:numColumns="2">
+    android:orientation="vertical"
+    tools:context="com.example.learningplatform.ModulesActivity">
+    <LinearLayout
+        android:id="@+id/lnyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/imgNoContent"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:src="@drawable/baseline_error_outline_24"/>
+        <TextView
+            android:id="@+id/tvNoContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No content found"
+            android:textSize="30sp"
+            android:textColor="@color/dark_orange"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"/>
+    </LinearLayout>
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="2">
+
+    </GridView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -18,10 +42,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="80dp"
         app:srcCompat="@android:drawable/ic_input_add"
         android:visibility="visible"
+        app:backgroundTint="@color/dark_green"
+        app:tint="@color/white"
         />
 
-</GridView>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -40,8 +40,6 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         gotosignup = findViewById(R.id.gotosignup);

@@ -3,6 +3,7 @@ package com.example.learningplatform;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.learn.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,20 +42,32 @@ public class ContentActivity extends AppCompatActivity {
     private ExpandableListDataPump edp;
     private ProgressDialog pgdialog;
     private String moduleId;
-
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_content);
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         pgdialog = new ProgressDialog(ContentActivity.this);
         pgdialog.setMessage("Loading data...");
         pgdialog.setCancelable(false);
         moduleId = getIntent().getStringExtra("id");
         lnyLayout = findViewById(R.id.lnyLayout);
+        fab = findViewById(R.id.fab);
         loadContents();
 
+        if(!Utils.getUser(ContentActivity.this,"user_type").equals("Admin")){
+            fab.setVisibility(View.GONE);
+        }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this,AddContentActivity.class);
+                intent.putExtra("id",moduleId);
+                startActivity(intent);
+            }
+        });
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -143,6 +157,8 @@ public class ContentActivity extends AppCompatActivity {
                             if (arr.length() == 0) {
                                 Toast.makeText(ContentActivity.this, "No content found", Toast.LENGTH_SHORT).show();
                                 lnyLayout.setVisibility(View.VISIBLE);
+                            }else{
+                                lnyLayout.setVisibility(View.GONE);
                             }
                             edp = new ExpandableListDataPump();
                             edp.setData(arr);
@@ -181,6 +197,11 @@ public class ContentActivity extends AppCompatActivity {
 
 // add it to the RequestQueue
         queue.add(getRequest);
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadContents();
     }
 
 }

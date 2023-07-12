@@ -1,14 +1,17 @@
 package com.example.learningplatform;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -19,6 +22,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.learn.R;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,21 +36,33 @@ import java.util.Map;
 public class ModulesActivity extends AppCompatActivity {
     private GridView gridView;
     private ModuleAdapter moduleAdapter;
+    private FloatingActionButton fab;
     private ArrayList<ModuleModel> moduleModelList;
     private String level = "", moduleUrl = Utils.host + "/modules";
+    private LinearLayout lnyLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modules);
         gridView = findViewById(R.id.gridView);
-        moduleModelList = new ArrayList<ModuleModel>();
+        fab = findViewById(R.id.fab);
+        lnyLayout = findViewById(R.id.lnyLayout);
+
         if (!Utils.getUser(ModulesActivity.this, "id").equals("0")) {
             if (Utils.getUser(ModulesActivity.this, "user_type").equals("Admin")) {
-                level = Utils.getUser(ModulesActivity.this, "id");
+                level = getIntent().getStringExtra("id");
                 moduleUrl = Utils.host + "/module/level/" + level;
+            } else {
+                fab.setVisibility(View.GONE);
             }
         }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ModulesActivity.this, AddModuleActivity.class));
+            }
+        });
         loadModules();
 
     }
@@ -61,6 +78,10 @@ public class ModulesActivity extends AppCompatActivity {
                         Log.d("Logresp", response);
                         try {
                             JSONArray arr = new JSONArray(response);
+                            if (arr.length() == 0)
+                                lnyLayout.setVisibility(View.VISIBLE);
+                            else
+                                lnyLayout.setVisibility(View.GONE);
                             setupJsonArrayToModuleModel(arr);
                             moduleAdapter = new ModuleAdapter(ModulesActivity.this, moduleModelList);
                             gridView.setAdapter(moduleAdapter);
@@ -95,6 +116,7 @@ public class ModulesActivity extends AppCompatActivity {
     }
 
     private void setupJsonArrayToModuleModel(JSONArray array) {
+        moduleModelList = new ArrayList<ModuleModel>();
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject obj = array.getJSONObject(i);
@@ -106,17 +128,24 @@ public class ModulesActivity extends AppCompatActivity {
         }
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_learner, menu);
-        return true;
+    protected void onResume() {
+        super.onResume();
+        loadModules();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_learner, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
             Utils.logout(ModulesActivity.this);
             finish();
             startActivity(new Intent(ModulesActivity.this, Login.class));
-            return true;
+            return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }

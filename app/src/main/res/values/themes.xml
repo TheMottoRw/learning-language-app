@@ -1,8 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Learn" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<!--    <style name="Base.Theme.Learn" parent="Theme.Material3.DayNight.NoActionBar">-->
+    <style name="Base.Theme.Learn" parent="Theme.MaterialComponents.Light.DarkActionBar">
+<!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
+         <item name="colorPrimary">@color/dark_green</item>
+         <item name="colorPrimaryDark">@color/dark_green</item>
+         <item name="colorAccent">@color/dark_green</item>
     </style>
 
     <style name="Theme.Learn" parent="Base.Theme.Learn" />

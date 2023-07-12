@@ -44,7 +44,7 @@ import kotlinx.coroutines.JobNode;
 
 public class AddModuleActivity extends AppCompatActivity {
     private Spinner spnLevel;
-    private EditText edtLevel;
+    private EditText edtModule;
     private ArrayList<String> levelIds, levelNames;
     private Button btnChooseIcon, btnCreate;
     private static int PICK_IMAGE_REQUEST = 1;
@@ -59,7 +59,7 @@ public class AddModuleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_module);
         imageView = findViewById(R.id.iconPreview);
         spnLevel = findViewById(R.id.spnLevel);
-        edtLevel = findViewById(R.id.edtLevel);
+        edtModule = findViewById(R.id.edtModule);
         btnChooseIcon = findViewById(R.id.btnChooseIcon);
         btnCreate = findViewById(R.id.btnCreate);
         btnChooseIcon.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +136,8 @@ public class AddModuleActivity extends AppCompatActivity {
                     Log.d("ResErr",s);
                     JSONObject obj = new JSONObject(s);
                     Toast.makeText(getApplicationContext(),obj.getString("message"),Toast.LENGTH_LONG).show();
+                    edtModule.setText("");
+
                 }catch (JSONException ex){
                     Log.d("Jsonerr",ex.getMessage());
                 }
@@ -151,7 +153,7 @@ public class AddModuleActivity extends AppCompatActivity {
 
                 data.put("icon", uploadImage);
                 data.put("level", levelIds.get(spnLevel.getSelectedItemPosition()));
-                data.put("name", edtLevel.getText().toString().trim());
+                data.put("name", edtModule.getText().toString().trim());
 
                 String result = rh.sendPostRequest(UPLOAD_URL, data);
 
@@ -216,10 +218,11 @@ public class AddModuleActivity extends AppCompatActivity {
             levelIds = new ArrayList<>();
             levelNames = new ArrayList<>();
             for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(0);
+                JSONObject obj = array.getJSONObject(i);
                 levelIds.add(obj.getString("id"));
                 levelNames.add(obj.getString("name"));
             }
+            Log.d("DERR",String.valueOf(levelNames.size()));
         } catch (JSONException ex) {
             Log.d("Jsonerr", ex.getMessage());
         }

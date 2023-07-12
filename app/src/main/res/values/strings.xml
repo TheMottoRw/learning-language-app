@@ -25,4 +25,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_level">Add level</string>
     <string name="level_name">Level name</string>
+    <string name="eng_word">English word</string>
+    <string name="kiny_word">Kinyarwanda word</string>
+    <string name="new_word">Add new word to learn</string>
 </resources>
