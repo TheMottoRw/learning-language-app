@@ -28,4 +28,5 @@
     <string name="eng_word">English word</string>
     <string name="kiny_word">Kinyarwanda word</string>
     <string name="new_word">Add new word to learn</string>
+    <string name="brief_explanation">Brief explanations</string>
 </resources>

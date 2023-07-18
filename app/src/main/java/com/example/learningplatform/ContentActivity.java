@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ContentActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
+    List<String> expandableListTitle,expandableListIds;
     HashMap<String, List<String>> expandableListDetail;
     private LinearLayout lnyLayout;
     private JSONArray array;
@@ -56,6 +57,7 @@ public class ContentActivity extends AppCompatActivity {
         lnyLayout = findViewById(R.id.lnyLayout);
         fab = findViewById(R.id.fab);
         loadContents();
+        enrollModule();
 
         if(!Utils.getUser(ContentActivity.this,"user_type").equals("Admin")){
             fab.setVisibility(View.GONE);
@@ -75,6 +77,8 @@ public class ContentActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),
 //                        expandableListTitle.get(groupPosition) + " List Expanded.",
 //                        Toast.LENGTH_SHORT).show();
+                Log.d("GPOS","G "+ expandableListIds.get(groupPosition));
+                enrollContent(expandableListIds.get(groupPosition));
             }
         });
 
@@ -101,6 +105,7 @@ public class ContentActivity extends AppCompatActivity {
 //                                expandableListTitle.get(groupPosition)).get(
 //                                childPosition), Toast.LENGTH_SHORT
 //                ).show();
+//                enrollContent(expandableListIds.get(childPosition));
                 return false;
             }
         });
@@ -164,7 +169,8 @@ public class ContentActivity extends AppCompatActivity {
                             edp.setData(arr);
                             expandableListDetail = edp.getDetails();
                             expandableListTitle = edp.getTitles();
-                            expandableListAdapter = new CustomExpandableListAdapter(ContentActivity.this, expandableListTitle, expandableListDetail);
+                            expandableListIds = edp.getIds();
+                            expandableListAdapter = new CustomExpandableListAdapter(ContentActivity.this,moduleId,expandableListIds ,expandableListTitle, expandableListDetail);
                             expandableListView.setAdapter(expandableListAdapter);
 
                         } catch (JSONException ex) {
@@ -198,6 +204,127 @@ public class ContentActivity extends AppCompatActivity {
 // add it to the RequestQueue
         queue.add(getRequest);
     }
+
+    private void enrollContent(String contentId) {
+        final String url = Utils.host + "/completed/content";
+        JSONObject body = new JSONObject();
+        Log.d("URL", url);
+        try {
+            body.put("module", moduleId);
+            body.put("content", contentId);
+            body.put("learner", Utils.getUser(ContentActivity.this, "id"));
+        } catch (JSONException ex) {
+            Log.d("JSONErr", ex.getMessage());
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+// prepare the Request
+        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // display response
+                        try {
+                            JSONObject res = new JSONObject(response);
+                            Log.d("JSONInfo", res.toString());
+                        } catch (JSONException ex) {
+                            Log.d("Json error", ex.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() {
+                return body.toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        ;
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
+    private void enrollModule() {
+        final String url = Utils.host + "/enroll";
+        JSONObject body = new JSONObject();
+        Log.d("URL", url);
+        try {
+            body.put("module", moduleId);
+            body.put("learner", Utils.getUser(ContentActivity.this, "id"));
+        } catch (JSONException ex) {
+            Log.d("JSONErr", ex.getMessage());
+        }
+        RequestQueue queue = Volley.newRequestQueue(this);
+// prepare the Request
+        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // display response
+                        try {
+                            JSONObject res = new JSONObject(response);
+                            Log.d("JSONInfo", res.toString());
+                        } catch (JSONException ex) {
+                            Log.d("Json error", ex.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() {
+                return body.toString().getBytes();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        ;
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
     @Override
     protected void onResume(){
         super.onResume();

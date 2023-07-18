@@ -49,8 +49,13 @@ public class ModuleAdapter extends ArrayAdapter<ModuleModel> {
         listitemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx, ContentActivity.class);
-                intent.putExtra("id",moduleModel.getId());
+                Intent intent= new Intent();
+                if(!Utils.getUser(ctx,"id").equals("")) {
+                    intent.setClass(ctx,ContentActivity.class);
+                    intent.putExtra("id", moduleModel.getId());
+                }else{
+                    intent.setClass(ctx, Login.class);
+                }
                 ctx.startActivity(intent);
             }
         });

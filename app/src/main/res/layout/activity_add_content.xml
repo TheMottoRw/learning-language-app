@@ -4,41 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login"
+    tools:context=".AddContentActivity"
     android:orientation="vertical"
     >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <ImageView
-            android:id="@+id/splashscreen"
-            android:layout_width="97dp"
-            android:layout_height="158dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/baseline_menu_book_24" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/learn_kinyarwanda"
-            android:textAllCaps="true"
-            android:visibility="visible"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="@drawable/top_round_container"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="70dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -57,6 +32,13 @@
             android:hint="@string/kiny_word"
             android:layout_marginTop="30dp"
             style="@style/edit_text_style"/>
+        <EditText
+            android:id="@+id/edtBriefExplanation"
+            android:hint="@string/brief_explanation"
+            android:layout_marginTop="30dp"
+            style="@style/edit_text_style"
+            android:lines="4"
+            android:gravity="start"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreate"
             android:layout_width="250dp"

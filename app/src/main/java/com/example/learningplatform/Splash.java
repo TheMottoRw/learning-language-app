@@ -31,7 +31,7 @@ public class Splash extends AppCompatActivity {
                 Intent mainIntent;
                 Log.d("UserInfo", Utils.getUser(Splash.this, "id"));
                 if (Utils.getUser(Splash.this, "id").equals("")) {
-                    mainIntent = new Intent(Splash.this, Login.class);
+                    mainIntent = new Intent(Splash.this, ModulesActivity.class);
                 } else {
                     if(Utils.getUser(Splash.this,"user_type").equals("Admin"))
                         mainIntent = new Intent(Splash.this, AdminActivity.class);

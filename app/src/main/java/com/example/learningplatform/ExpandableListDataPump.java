@@ -11,16 +11,22 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListDataPump {
-    private List<String> titles;
+    private List<String> titles,ids;
+    private String moduleId = "";
     private HashMap<String,List<String>> details;
     public void setData(JSONArray data){
         try{
+            ids = new ArrayList<>();
             titles = new ArrayList<>();
             details = new HashMap<>();
             for (int i=0;i<data.length();i++){
                 JSONObject obj = data.getJSONObject(i);
                 ArrayList<String> arrayList = new ArrayList<String>();
-                arrayList.add(obj.getString("kiny_word"));
+                if(!obj.getString("explanation").equals(""))
+                    arrayList.add(obj.getString("kiny_word")+"\n\n"+obj.getString("explanation"));
+                else
+                    arrayList.add(obj.getString("kiny_word"));
+                ids.add(obj.getString("id"));
                 titles.add(obj.getString("eng_word"));
                 details.put(obj.getString("eng_word"),arrayList);
             }
@@ -30,6 +36,12 @@ public class ExpandableListDataPump {
     }
     public List<String> getTitles(){
         return titles;
+    }
+    public List<String> getIds(){
+        return ids;
+    }
+    public String getModuleId(){
+        return moduleId;
     }
     public HashMap<String,List<String>> getDetails(){
         return details;

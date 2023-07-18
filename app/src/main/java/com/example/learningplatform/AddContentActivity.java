@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddContentActivity extends AppCompatActivity {
-    private EditText edtEng,edtKiny;
+    private EditText edtEng,edtKiny,edtExplanation;
     private Button btnCreate;
     private ProgressDialog pgdialog;
     private String moduleId;
@@ -38,6 +38,7 @@ public class AddContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_content);
         edtEng = findViewById(R.id.edtEngWord);
         edtKiny = findViewById(R.id.edtKinyWord);
+        edtExplanation = findViewById(R.id.edtBriefExplanation);
         btnCreate = findViewById(R.id.btnCreate);
         pgdialog = new ProgressDialog(AddContentActivity.this);
         pgdialog.setMessage("Saving data...");
@@ -58,6 +59,7 @@ public class AddContentActivity extends AppCompatActivity {
         try{
             body.put("eng_word",edtEng.getText().toString().trim());
             body.put("kiny_word",edtKiny.getText().toString().trim());
+            body.put("explanation",edtExplanation.getText().toString().trim());
             body.put("module",moduleId);
         }catch (JSONException ex){
             Log.d("JSONErr",ex.getMessage());
@@ -76,6 +78,7 @@ public class AddContentActivity extends AppCompatActivity {
                             Snackbar.make(edtEng,obj.getString("message"), Snackbar.LENGTH_SHORT).show();
                             edtEng.setText("");
                             edtKiny.setText("");
+                            edtExplanation.setText("");
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
@@ -116,5 +119,7 @@ public class AddContentActivity extends AppCompatActivity {
 // add it to the RequestQueue
         queue.add(getRequest);
     }
+
+    //enroll to module [have not been placed to Adapter because when we click on item it opens this activity]
 
 }
