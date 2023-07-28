@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.file.attribute.GroupPrincipal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,7 @@ public class ContentActivity extends AppCompatActivity {
     private ExpandableListDataPump edp;
     private ProgressDialog pgdialog;
     private String moduleId;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab,fabUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +55,26 @@ public class ContentActivity extends AppCompatActivity {
         moduleId = getIntent().getStringExtra("id");
         lnyLayout = findViewById(R.id.lnyLayout);
         fab = findViewById(R.id.fab);
+        fabUpload = findViewById(R.id.fabUpload);
         loadContents();
         enrollModule();
 
         if(!Utils.getUser(ContentActivity.this,"user_type").equals("Admin")){
             fab.setVisibility(View.GONE);
+            fabUpload.setVisibility(View.GONE);
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContentActivity.this,AddContentActivity.class);
+                intent.putExtra("id",moduleId);
+                startActivity(intent);
+            }
+        });
+        fabUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this, UploadContentActivity.class);
                 intent.putExtra("id",moduleId);
                 startActivity(intent);
             }
@@ -78,7 +87,8 @@ public class ContentActivity extends AppCompatActivity {
 //                        expandableListTitle.get(groupPosition) + " List Expanded.",
 //                        Toast.LENGTH_SHORT).show();
                 Log.d("GPOS","G "+ expandableListIds.get(groupPosition));
-                enrollContent(expandableListIds.get(groupPosition));
+                if(Utils.getUser(ContentActivity.this,"user_type").equals("Learner"))
+                    enrollContent(expandableListIds.get(groupPosition));
             }
         });
 
@@ -160,7 +170,6 @@ public class ContentActivity extends AppCompatActivity {
                         try {
                             JSONArray arr = new JSONArray(response);
                             if (arr.length() == 0) {
-                                Toast.makeText(ContentActivity.this, "No content found", Toast.LENGTH_SHORT).show();
                                 lnyLayout.setVisibility(View.VISIBLE);
                             }else{
                                 lnyLayout.setVisibility(View.GONE);

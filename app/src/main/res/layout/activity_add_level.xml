@@ -15,24 +15,6 @@
         android:padding="20dp"
         android:layout_marginTop="60dp">
 
-        <ImageView
-            android:id="@+id/splashscreen"
-            android:layout_width="97dp"
-            android:layout_height="158dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/baseline_menu_book_24" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/learn_kinyarwanda"
-            android:textAllCaps="true"
-            android:visibility="visible"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
     </LinearLayout>
 
     <LinearLayout
@@ -48,6 +30,27 @@
             android:text="@string/add_level"
             style="@style/header"
             android:gravity="center" />
+        <ImageView
+            android:id="@+id/iconPreview"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnChooseIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:background="@color/light_green"
+            app:cornerRadius="10dp"
+            android:layout_gravity="center"
+            android:paddingVertical="15dp"
+            android:textStyle="normal"
+            android:textColor="@color/text_color"
+            android:text="@string/upload_module_icon"
+            android:drawableEnd="@drawable/baseline_upload_file_24"
+            android:layout_marginTop="30dp"/>
         <EditText
             android:id="@+id/edtLevel"
             style="@style/edit_text_style"

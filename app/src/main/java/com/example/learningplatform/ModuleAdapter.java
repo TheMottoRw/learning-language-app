@@ -2,11 +2,13 @@ package com.example.learningplatform;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,8 @@ public class ModuleAdapter extends ArrayAdapter<ModuleModel> {
         ModuleModel moduleModel = getItem(position);
         TextView moduleName = listitemView.findViewById(R.id.moduleName);
         ImageView moduleIcon = listitemView.findViewById(R.id.moduleIcon);
+        TextView moduleLockIcon = listitemView.findViewById(R.id.moduleLockIcon);
+        TextView moduleUnlockIcon = listitemView.findViewById(R.id.moduleUnlockIcon);
 
         moduleName.setText(moduleModel.getModuleName());
 
@@ -46,6 +50,17 @@ public class ModuleAdapter extends ArrayAdapter<ModuleModel> {
         else
             Glide.with(ctx).load(Utils.host+"/images/"+moduleModel.getImage()).into(moduleIcon);
 
+
+        Log.d("UserType",Utils.getUser(ctx,"user_type"));
+        if(Utils.getUser(ctx,"user_type").equals("Learner")) {
+            if (moduleModel.getIsEnrolled().equals("enrolled")) {
+                moduleLockIcon.setVisibility(View.GONE);
+                moduleUnlockIcon.setVisibility(View.VISIBLE);
+            } else if (moduleModel.getIsEnrolled().equals("not_enrolled")) {
+                moduleLockIcon.setVisibility(View.VISIBLE);
+                moduleUnlockIcon.setVisibility(View.GONE);
+            }
+        }
         listitemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

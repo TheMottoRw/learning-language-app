@@ -29,4 +29,8 @@
     <string name="kiny_word">Kinyarwanda word</string>
     <string name="new_word">Add new word to learn</string>
     <string name="brief_explanation">Brief explanations</string>
+    <string name="upload_content">Upload content</string>
+    <string name="upload">Upload</string>
+    <string name="selected_file_name">Selected file name</string>
+    <string name="choose_file">Choose file</string>
 </resources>

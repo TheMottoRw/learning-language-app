@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_smoke">#009688</color>
     <color name="colorPrimary">@color/light_green</color>
     <color name="colorPrimaryDark">@color/dark_green</color>
     <color name="colorAccent">@color/light_green</color>

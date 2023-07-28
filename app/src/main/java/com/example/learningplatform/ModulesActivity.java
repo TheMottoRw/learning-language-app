@@ -55,6 +55,7 @@ public class ModulesActivity extends AppCompatActivity {
                 moduleUrl = Utils.host + "/module/level/" + level;
             } else {
                 fab.setVisibility(View.GONE);
+                moduleUrl = Utils.host+"/modules/user/stats?learner="+Utils.getUser(ModulesActivity.this, "id");
             }
         }
         fab.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +121,11 @@ public class ModulesActivity extends AppCompatActivity {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject obj = array.getJSONObject(i);
-                moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon")));
+                if(Utils.getUser(ModulesActivity.this,"user_type").equals("Learner")) {
+                    moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"), obj.getString("is_enrolled")));
+                }else{
+                    moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"),""));
+                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

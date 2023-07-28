@@ -3,15 +3,18 @@ package com.example.learningplatform;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.learn.R;
 
 import org.json.JSONArray;
@@ -50,6 +53,11 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.MyViewHold
             JSONObject currentObj = mDataset.getJSONObject(position);
             holder.id.setText(currentObj.getString("id"));
             holder.name.setText(currentObj.getString("name"));
+
+            if(currentObj.getString("icon").startsWith("http"))
+                Glide.with(ctx).load(currentObj.getString("icon")).into(holder.icon);
+            else
+                Glide.with(ctx).load(Utils.host+"/images/"+currentObj.getString("icon")).into(holder.icon);
             holder.lnlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -82,6 +90,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.MyViewHold
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView id,name;
+        public ImageView icon;
         public LinearLayout lnlayout;
 
         public MyViewHolder(LinearLayout lny) {
@@ -89,6 +98,7 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.MyViewHold
             lnlayout = lny.findViewById(R.id.lnyLayout);
             id = lny.findViewById(R.id.tvId);
             name = lny.findViewById(R.id.tvLevel);
+            icon = lny.findViewById(R.id.icon);
 
         }
     }

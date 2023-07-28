@@ -6,11 +6,22 @@ public class ModuleModel {
     private String image;
     private String level;
 
-    public ModuleModel(String id,String level,String moduleName, String image) {
+    public String getIsEnrolled() {
+        return isEnrolled;
+    }
+
+    public void setIsEnrolled(String isEnrolled) {
+        this.isEnrolled = isEnrolled;
+    }
+
+    private String isEnrolled;
+
+    public ModuleModel(String id,String level,String moduleName, String image, String isEnrolled) {
         this.id = id;
         this.level = level;
         this.moduleName = moduleName;
         this.image = image;
+        this.isEnrolled = isEnrolled;
     }
     public String getId() {
         return id;
