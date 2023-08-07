@@ -19,6 +19,12 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
+            android:name="com.example.learningplatform.Profile"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.QuizActivity"
+            android:exported="true"></activity>
+        <activity
             android:name="com.example.learningplatform.UploadContentActivity"
             android:exported="false" />
         <activity
@@ -41,7 +47,7 @@
             android:exported="true" />
         <activity
             android:name="com.example.learningplatform.ModulesActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name="com.example.learningplatform.CreateAccountActivity"
             android:exported="true" />

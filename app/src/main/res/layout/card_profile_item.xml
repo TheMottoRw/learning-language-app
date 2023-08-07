@@ -13,7 +13,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        >
 
         <ImageView
             android:id="@+id/moduleIcon"
@@ -56,6 +57,17 @@
             android:layout_marginStart="10dp"
             android:layout_alignBottom="@+id/moduleIcon"
             android:background="@drawable/text_round_label"
+            />
+        <TextView
+            android:id="@+id/modulePoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_alignTop="@+id/moduleName"
+            android:layout_marginTop="20dp"
             />
 
     </RelativeLayout>

@@ -12,12 +12,13 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
-    public static String host = "http://192.168.8.105:3000";
+    public static String host = "http://192.168.130.120:3000";
 
     public void setUserSession(Context context, JSONObject obj){
         try{
             SharedPreferences.Editor sh = context.getSharedPreferences("UserInfo",Context.MODE_PRIVATE).edit();
             sh.putString("id",obj.getString("id"));
+            sh.putString("name",obj.getString("name"));
             sh.putString("email",obj.getString("email"));
             sh.putString("user_type",obj.getString("user_type"));
             sh.apply();

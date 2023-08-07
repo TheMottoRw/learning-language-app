@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -33,59 +34,50 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModulesActivity extends AppCompatActivity {
+public class Profile extends AppCompatActivity {
     private GridView gridView;
-    private ModuleAdapter moduleAdapter;
+    private ProfileAdapter profileAdapter;
     private FloatingActionButton fab;
     private ArrayList<ModuleModel> moduleModelList;
-    private String level = "", moduleUrl = Utils.host + "/modules";
+    private String level = "", url;
     private LinearLayout lnyLayout;
+    private TextView tvEnrolled,tvCompleted,tvRemaining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modules);
+        setContentView(R.layout.activity_profile);
         gridView = findViewById(R.id.gridView);
-        fab = findViewById(R.id.fab);
-        lnyLayout = findViewById(R.id.lnyLayout);
+        tvCompleted = findViewById(R.id.tvCompleted);
+        tvEnrolled = findViewById(R.id.tvEnrolled);
+        tvRemaining = findViewById(R.id.tvRemaining);
 
-        if (!Utils.getUser(ModulesActivity.this, "id").equals("0")) {
-            if (Utils.getUser(ModulesActivity.this, "user_type").equals("Admin")) {
-                level = getIntent().getStringExtra("id");
-                moduleUrl = Utils.host + "/module/level/" + level;
-            } else {
-                fab.setVisibility(View.GONE);
-                moduleUrl = Utils.host+"/modules/user/stats?learner="+Utils.getUser(ModulesActivity.this, "id");
-            }
-        }
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ModulesActivity.this, AddModuleActivity.class));
-            }
-        });
-        loadModules();
+        loadStats();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Umwirondoro: "+Utils.getUser(Profile.this,"name"));
 
     }
 
-    private void loadModules() {
-        Log.d("URL", moduleUrl);
-        RequestQueue queue = Volley.newRequestQueue(ModulesActivity.this);
-        StringRequest getRequest = new StringRequest(Request.Method.GET, moduleUrl,
+    private void loadStats() {
+        url = Utils.host + "/stats/completed?learner="+Utils.getUser(Profile.this,"id");
+        Log.d("URL", url);
+        RequestQueue queue = Volley.newRequestQueue(Profile.this);
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // display response
                         Log.d("Logresp", response);
                         try {
-                            JSONArray arr = new JSONArray(response);
-                            if (arr.length() == 0)
-                                lnyLayout.setVisibility(View.VISIBLE);
-                            else
-                                lnyLayout.setVisibility(View.GONE);
+                            JSONObject obj = new JSONObject(response);
+                            JSONArray arr = obj.getJSONArray("completed");
                             setupJsonArrayToModuleModel(arr);
-                            moduleAdapter = new ModuleAdapter(ModulesActivity.this, moduleModelList);
-                            gridView.setAdapter(moduleAdapter);
+
+                            tvEnrolled.setText(obj.getString("enrolled_len"));
+                            tvCompleted.setText(obj.getString("completed_len"));
+                            tvRemaining.setText(String.valueOf(obj.getInt("enrolled_len")-obj.getInt("completed_len")));
+                            profileAdapter = new ProfileAdapter(Profile.this, moduleModelList);
+                            gridView.setAdapter(profileAdapter);
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
@@ -94,7 +86,7 @@ public class ModulesActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ModulesActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Profile.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }
@@ -121,7 +113,7 @@ public class ModulesActivity extends AppCompatActivity {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject obj = array.getJSONObject(i);
-                if(Utils.getUser(ModulesActivity.this,"user_type").equals("Learner")) {
+                if(Utils.getUser(Profile.this,"user_type").equals("Learner")) {
                     moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"), obj.getString("is_enrolled"), obj.getString("marks"), obj.getString("marks_total"), obj.getString("is_completed")));
                 }else{
                     moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"),"","","",""));
@@ -135,7 +127,7 @@ public class ModulesActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        loadModules();
+        loadStats();
     }
 
     @Override
@@ -146,14 +138,13 @@ public class ModulesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_profile) {
-            startActivity(new Intent(ModulesActivity.this, Profile.class));
-            return super.onOptionsItemSelected(item);
-        }else if (item.getItemId() == R.id.action_logout) {
-            Utils.logout(ModulesActivity.this);
+        Log.d("Backutton","D"+item.getItemId());
+        if (item.getItemId() == 16908332) {
             finish();
-            startActivity(new Intent(ModulesActivity.this, Login.class));
-            return super.onOptionsItemSelected(item);
+        }else if (item.getItemId() == R.id.action_logout) {
+            Utils.logout(Profile.this);
+            finish();
+            startActivity(new Intent(Profile.this, Login.class));
         }
         return super.onOptionsItemSelected(item);
     }

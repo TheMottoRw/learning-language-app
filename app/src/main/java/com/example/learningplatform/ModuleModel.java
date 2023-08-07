@@ -6,22 +6,20 @@ public class ModuleModel {
     private String image;
     private String level;
 
-    public String getIsEnrolled() {
-        return isEnrolled;
-    }
-
-    public void setIsEnrolled(String isEnrolled) {
-        this.isEnrolled = isEnrolled;
-    }
-
     private String isEnrolled;
+    private String marks;
+    private String totalMarks;
+    private String isCompleted;
 
-    public ModuleModel(String id,String level,String moduleName, String image, String isEnrolled) {
+    public ModuleModel(String id,String level,String moduleName, String image, String isEnrolled,String marks,String totalMarks,String isCompleted) {
         this.id = id;
         this.level = level;
         this.moduleName = moduleName;
         this.image = image;
         this.isEnrolled = isEnrolled;
+        this.marks = marks;
+        this.totalMarks = totalMarks;
+        this.isCompleted = isCompleted();
     }
     public String getId() {
         return id;
@@ -53,5 +51,38 @@ public class ModuleModel {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+
+    public String getIsEnrolled() {
+        return isEnrolled;
+    }
+
+    public void setIsEnrolled(String isEnrolled) {
+        this.isEnrolled = isEnrolled;
+    }
+
+    public String getMarks() {
+        return marks;
+    }
+
+    public void setMarks(String marks) {
+        this.marks = marks;
+    }
+
+    public String getTotalMarks() {
+        return totalMarks;
+    }
+
+    public void setTotalMarks(String totalMarks) {
+        this.totalMarks = totalMarks;
+    }
+
+    public String isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(String completed) {
+        isCompleted = completed;
     }
 }

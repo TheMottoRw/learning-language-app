@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -43,6 +44,7 @@ public class ContentActivity extends AppCompatActivity {
     private ProgressDialog pgdialog;
     private String moduleId;
     private FloatingActionButton fab,fabUpload;
+    private Button btnQuiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,20 @@ public class ContentActivity extends AppCompatActivity {
         lnyLayout = findViewById(R.id.lnyLayout);
         fab = findViewById(R.id.fab);
         fabUpload = findViewById(R.id.fabUpload);
+        btnQuiz = findViewById(R.id.btnQuiz);
+        if(Utils.getUser(ContentActivity.this,"user_type").equals("Admin"))
+            btnQuiz.setVisibility(View.GONE);
         loadContents();
         enrollModule();
+        loadLearningStats();
+        btnQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this,QuizActivity.class);
+                intent.putExtra("module",moduleId);
+                startActivity(intent);
+            }
+        });
 
         if(!Utils.getUser(ContentActivity.this,"user_type").equals("Admin")){
             fab.setVisibility(View.GONE);
@@ -182,6 +196,8 @@ public class ContentActivity extends AppCompatActivity {
                             expandableListAdapter = new CustomExpandableListAdapter(ContentActivity.this,moduleId,expandableListIds ,expandableListTitle, expandableListDetail);
                             expandableListView.setAdapter(expandableListAdapter);
 
+                            if(Utils.getUser(ContentActivity.this,"user_type").equals("Admin"))
+                                btnQuiz.setVisibility(View.GONE);
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
@@ -326,6 +342,111 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public String getBodyContentType() {
                 return "application/json";
+            }
+        };
+        ;
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
+    private void loadLearningStats() {
+        final String url = Utils.host + "/stats/progress?module="+moduleId+"&learner="+Utils.getUser(ContentActivity.this,"id");
+        Log.d("URL", url);
+//        tvLoggingIn.setVisibility(View.VISIBLE);
+        RequestQueue queue = Volley.newRequestQueue(this);
+// prepare the Request
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // display response
+                        Log.d("Logresp", response);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if(obj.getInt("percentage")==100){
+                                btnQuiz.setVisibility(View.VISIBLE);
+                            }else{
+                                btnQuiz.setVisibility(View.GONE);
+                            }
+
+                        } catch (JSONException ex) {
+                            Log.d("Json error", ex.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        pgdialog.dismiss();
+                        Toast.makeText(ContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                return headers;
+            }
+        };
+        ;
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
+    private void hasDoneModule() {
+        final String url = Utils.host + "/stats/hasdone?module="+moduleId+"&learner="+Utils.getUser(ContentActivity.this,"id");
+        pgdialog.show();
+        Log.d("URL", url);
+//        tvLoggingIn.setVisibility(View.VISIBLE);
+        RequestQueue queue = Volley.newRequestQueue(this);
+// prepare the Request
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // display response
+                        pgdialog.dismiss();
+                        Log.d("Logresp", response);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if(!obj.getBoolean("has_done_module")){
+                                btnQuiz.setVisibility(View.VISIBLE);
+                            }else{
+                                btnQuiz.setVisibility(View.GONE);
+                            }
+
+                        } catch (JSONException ex) {
+                            Log.d("Json error", ex.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        pgdialog.dismiss();
+                        Toast.makeText(ContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                return headers;
             }
         };
         ;
