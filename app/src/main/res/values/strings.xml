@@ -34,4 +34,17 @@
     <string name="selected_file_name">Hitamo urupapuro</string>
     <string name="choose_file">Hitamo urupapuro</string>
     <string name="profile">Umwirondoro</string>
+    <string name="upload_quiz">Shyiramo Ibibazo</string>
+    <string name="question">Ikibazo</string>
+    <string name="choices">Amahitamo (Atandukanijwe na , Urugero: Amirire,Ikivuguto)</string>
+    <string name="right_choice">Igisubizo cy\'ukuri</string>
+    <string name="new_question">Injiza ikibazo cyo gukora</string>
+    <string name="add">Injiza</string>
+    <string name="quiz">Isuzumabumenyi</string>
+    <string name="submit">Ohereza</string>
+    <string name="update">Hindura</string>
+    <string name="update_question">Hindura ikibazo</string>
+    <string name="update_word">Hindura ijambo ryo kwiga</string>
+    <string name="update_module">Hindura Isomo</string>
+    <string name="update_level">Hindura Ikiciro</string>
 </resources>

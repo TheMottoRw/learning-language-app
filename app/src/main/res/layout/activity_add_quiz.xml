@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.learningplatform.AddQuizActivity"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@drawable/top_round_container"
+        android:layout_marginTop="70dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_question"
+            style="@style/header"
+            android:gravity="center"
+            android:textSize="24sp"/>
+        <EditText
+            android:id="@+id/edtQuestion"
+            android:hint="@string/question"
+            android:layout_marginTop="30dp"
+            style="@style/edit_text_style"/>
+        <EditText
+            android:id="@+id/edtAnswer"
+            android:hint="@string/right_choice"
+            android:layout_marginTop="30dp"
+            style="@style/edit_text_style"/>
+        <EditText
+            android:id="@+id/edtChoices"
+            android:hint="@string/choices"
+            android:layout_marginTop="30dp"
+            style="@style/edit_text_style"
+            android:lines="4"
+            android:gravity="start"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreate"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:backgroundTint="@color/button_green"
+            app:cornerRadius="10dp"
+            android:layout_gravity="center"
+            android:paddingVertical="15dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

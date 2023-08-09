@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -36,14 +38,14 @@ public class ContentActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle,expandableListIds;
+    List<String> expandableListTitle, expandableListIds, expandableListExplanations;
     HashMap<String, List<String>> expandableListDetail;
     private LinearLayout lnyLayout;
     private JSONArray array;
     private ExpandableListDataPump edp;
     private ProgressDialog pgdialog;
     private String moduleId;
-    private FloatingActionButton fab,fabUpload;
+    private FloatingActionButton fab, fabUpload;
     private Button btnQuiz;
 
     @Override
@@ -59,29 +61,31 @@ public class ContentActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fabUpload = findViewById(R.id.fabUpload);
         btnQuiz = findViewById(R.id.btnQuiz);
-        if(Utils.getUser(ContentActivity.this,"user_type").equals("Admin"))
+        if (Utils.getUser(ContentActivity.this, "user_type").equals("Admin")) {
             btnQuiz.setVisibility(View.GONE);
+        } else {
+            enrollModule();
+            loadLearningStats();
+        }
         loadContents();
-        enrollModule();
-        loadLearningStats();
         btnQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContentActivity.this,QuizActivity.class);
-                intent.putExtra("module",moduleId);
+                Intent intent = new Intent(ContentActivity.this, QuizActivity.class);
+                intent.putExtra("module", moduleId);
                 startActivity(intent);
             }
         });
 
-        if(!Utils.getUser(ContentActivity.this,"user_type").equals("Admin")){
+        if (!Utils.getUser(ContentActivity.this, "user_type").equals("Admin")) {
             fab.setVisibility(View.GONE);
             fabUpload.setVisibility(View.GONE);
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContentActivity.this,AddContentActivity.class);
-                intent.putExtra("id",moduleId);
+                Intent intent = new Intent(ContentActivity.this, AddContentActivity.class);
+                intent.putExtra("id", moduleId);
                 startActivity(intent);
             }
         });
@@ -89,7 +93,7 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContentActivity.this, UploadContentActivity.class);
-                intent.putExtra("id",moduleId);
+                intent.putExtra("id", moduleId);
                 startActivity(intent);
             }
         });
@@ -100,8 +104,8 @@ public class ContentActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),
 //                        expandableListTitle.get(groupPosition) + " List Expanded.",
 //                        Toast.LENGTH_SHORT).show();
-                Log.d("GPOS","G "+ expandableListIds.get(groupPosition));
-                if(Utils.getUser(ContentActivity.this,"user_type").equals("Learner"))
+                Log.d("GPOS", "G " + expandableListIds.get(groupPosition));
+                if (Utils.getUser(ContentActivity.this, "user_type").equals("Learner"))
                     enrollContent(expandableListIds.get(groupPosition));
             }
         });
@@ -129,7 +133,14 @@ public class ContentActivity extends AppCompatActivity {
 //                                expandableListTitle.get(groupPosition)).get(
 //                                childPosition), Toast.LENGTH_SHORT
 //                ).show();
-//                enrollContent(expandableListIds.get(childPosition));
+                Intent intent = new Intent(ContentActivity.this,UpdateContentActivity.class);
+                intent.putExtra("id",expandableListIds.get(childPosition));
+                intent.putExtra("eng_word",expandableListTitle.get(groupPosition));
+                intent.putExtra("kiny_word",expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
+                intent.putExtra("explanation",expandableListExplanations.get(groupPosition));
+                intent.putExtra("module",moduleId);
+                startActivity(intent);
+                Toast.makeText(ContentActivity.this,"ID:"+expandableListIds.get(groupPosition),Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -185,7 +196,7 @@ public class ContentActivity extends AppCompatActivity {
                             JSONArray arr = new JSONArray(response);
                             if (arr.length() == 0) {
                                 lnyLayout.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 lnyLayout.setVisibility(View.GONE);
                             }
                             edp = new ExpandableListDataPump();
@@ -193,10 +204,11 @@ public class ContentActivity extends AppCompatActivity {
                             expandableListDetail = edp.getDetails();
                             expandableListTitle = edp.getTitles();
                             expandableListIds = edp.getIds();
-                            expandableListAdapter = new CustomExpandableListAdapter(ContentActivity.this,moduleId,expandableListIds ,expandableListTitle, expandableListDetail);
+                            expandableListExplanations = edp.getExplanations();
+                            expandableListAdapter = new CustomExpandableListAdapter(ContentActivity.this, moduleId, expandableListIds, expandableListTitle, expandableListDetail);
                             expandableListView.setAdapter(expandableListAdapter);
 
-                            if(Utils.getUser(ContentActivity.this,"user_type").equals("Admin"))
+                            if (Utils.getUser(ContentActivity.this, "user_type").equals("Admin"))
                                 btnQuiz.setVisibility(View.GONE);
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
@@ -290,6 +302,7 @@ public class ContentActivity extends AppCompatActivity {
 // add it to the RequestQueue
         queue.add(getRequest);
     }
+
     private void enrollModule() {
         final String url = Utils.host + "/enroll";
         JSONObject body = new JSONObject();
@@ -351,7 +364,7 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void loadLearningStats() {
-        final String url = Utils.host + "/stats/progress?module="+moduleId+"&learner="+Utils.getUser(ContentActivity.this,"id");
+        final String url = Utils.host + "/stats/hascompleted?module=" + moduleId + "&learner=" + Utils.getUser(ContentActivity.this, "id");
         Log.d("URL", url);
 //        tvLoggingIn.setVisibility(View.VISIBLE);
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -364,10 +377,10 @@ public class ContentActivity extends AppCompatActivity {
                         Log.d("Logresp", response);
                         try {
                             JSONObject obj = new JSONObject(response);
-                            if(obj.getInt("percentage")==100){
-                                btnQuiz.setVisibility(View.VISIBLE);
-                            }else{
+                            if (obj.getBoolean("has_done_module")) {
                                 btnQuiz.setVisibility(View.GONE);
+                            } else {
+                                btnQuiz.setVisibility(View.VISIBLE);
                             }
 
                         } catch (JSONException ex) {
@@ -401,8 +414,9 @@ public class ContentActivity extends AppCompatActivity {
 // add it to the RequestQueue
         queue.add(getRequest);
     }
+
     private void hasDoneModule() {
-        final String url = Utils.host + "/stats/hasdone?module="+moduleId+"&learner="+Utils.getUser(ContentActivity.this,"id");
+        final String url = Utils.host + "/stats/hasdone?module=" + moduleId + "&learner=" + Utils.getUser(ContentActivity.this, "id");
         pgdialog.show();
         Log.d("URL", url);
 //        tvLoggingIn.setVisibility(View.VISIBLE);
@@ -417,9 +431,9 @@ public class ContentActivity extends AppCompatActivity {
                         Log.d("Logresp", response);
                         try {
                             JSONObject obj = new JSONObject(response);
-                            if(!obj.getBoolean("has_done_module")){
+                            if (!obj.getBoolean("has_done_module")) {
                                 btnQuiz.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 btnQuiz.setVisibility(View.GONE);
                             }
 
@@ -456,9 +470,32 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         loadContents();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (Utils.getUser(ContentActivity.this, "user_type").equals("Admin")) {
+            getMenuInflater().inflate(R.menu.menu_content, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_quiz) {
+            Intent intent = new Intent(ContentActivity.this, QuizManageActivity.class);
+            intent.putExtra("module", moduleId);
+            startActivity(intent);
+            return super.onOptionsItemSelected(item);
+        } else if (item.getItemId() == R.id.action_logout) {
+            Utils.logout(ContentActivity.this);
+            finish();
+            startActivity(new Intent(ContentActivity.this, Login.class));
+            return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -19,11 +19,32 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
+            android:name="com.example.learningplatform.UpdateLevelActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.UpdateModuleActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.UpdateContentActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.UpdateQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.QuizManageActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.AddQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.learningplatform.UploadQuizActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.learningplatform.Profile"
             android:exported="false" />
         <activity
             android:name="com.example.learningplatform.QuizActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name="com.example.learningplatform.UploadContentActivity"
             android:exported="false" />

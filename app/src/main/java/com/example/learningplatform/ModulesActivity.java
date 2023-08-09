@@ -140,7 +140,11 @@ public class ModulesActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_learner, menu);
+        if(Utils.getUser(ModulesActivity.this,"user_type").equals("Admin")){
+            getMenuInflater().inflate(R.menu.menu_admin, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.menu_learner, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

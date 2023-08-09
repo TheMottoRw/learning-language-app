@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.learn.R;
 
 import java.util.ArrayList;
@@ -72,6 +73,18 @@ public class ModuleAdapter extends ArrayAdapter<ModuleModel> {
                     intent.setClass(ctx, Login.class);
                 }
                 ctx.startActivity(intent);
+            }
+        });
+        listitemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(ctx,UpdateModuleActivity.class);
+                intent.putExtra("module",moduleModel.getId());
+                intent.putExtra("name",moduleModel.getModuleName());
+                intent.putExtra("level",moduleModel.getLevel());
+                intent.putExtra("icon",moduleModel.getImage());
+                ctx.startActivity(intent);
+                return false;
             }
         });
 

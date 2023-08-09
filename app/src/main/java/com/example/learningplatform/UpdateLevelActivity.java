@@ -13,12 +13,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,50 +27,53 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.learn.R;
+import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddModuleActivity extends AppCompatActivity {
-    private Spinner spnLevel;
-    private EditText edtModule;
-    private ArrayList<String> levelIds, levelNames;
+public class UpdateLevelActivity extends AppCompatActivity {
+    private ProgressDialog pgdialog;
+    private EditText edtLevel;
     private Button btnChooseIcon, btnCreate;
     private static int PICK_IMAGE_REQUEST = 1;
     private Uri filePath;
     private Bitmap bitmap;
     private ImageView imageView;
-    private static final String UPLOAD_URL = Utils.host + "/module";
+    private String levelId, prevIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_module);
+        setContentView(R.layout.activity_update_level);
+        pgdialog = new ProgressDialog(this);
+        pgdialog.setMessage("Saving data...");
+        pgdialog.setCancelable(false);
+        Intent intent = getIntent();
+        levelId = intent.getStringExtra("id");
+        prevIcon = intent.getStringExtra("icon");
+        edtLevel = findViewById(R.id.edtLevel);
         imageView = findViewById(R.id.iconPreview);
-        spnLevel = findViewById(R.id.spnLevel);
-        edtModule = findViewById(R.id.edtModule);
         btnChooseIcon = findViewById(R.id.btnChooseIcon);
         btnCreate = findViewById(R.id.btnCreate);
+        edtLevel.setText(intent.getStringExtra("name"));
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateLevel();
+            }
+        });
         btnChooseIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showFileChooser();
             }
         });
-        btnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addModule();
-            }
-        });
-        loadLevels();
     }
 
     private void showFileChooser() {
@@ -114,7 +115,8 @@ public class AddModuleActivity extends AppCompatActivity {
         return encodedImage;
     }
 
-    private void addModule() {
+    private void updateLevel() {
+        final String UPLOAD_URL = Utils.host + "/level/" + levelId;
         class UploadImage extends AsyncTask<Bitmap, Void, String> {
 
             ProgressDialog loading;
@@ -123,7 +125,7 @@ public class AddModuleActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(AddModuleActivity.this, "Uploading...", null, true, true);
+                loading = ProgressDialog.show(UpdateLevelActivity.this, "Uploading...", null, true, true);
             }
 
             @Override
@@ -131,13 +133,12 @@ public class AddModuleActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 try {
-                    Log.d("ResErr",s);
+                    Log.d("ResErr", s);
                     JSONObject obj = new JSONObject(s);
-                    Toast.makeText(getApplicationContext(),obj.getString("message"),Toast.LENGTH_LONG).show();
-                    edtModule.setText("");
+                    Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
 
-                }catch (JSONException ex){
-                    Log.d("Jsonerr",ex.getMessage());
+                } catch (JSONException ex) {
+                    Log.d("Jsonerr", ex.getMessage());
                 }
             }
 
@@ -150,8 +151,8 @@ public class AddModuleActivity extends AppCompatActivity {
                 HashMap<String, String> data = new HashMap<>();
 
                 data.put("icon", uploadImage);
-                data.put("level", levelIds.get(spnLevel.getSelectedItemPosition()));
-                data.put("name", edtModule.getText().toString().trim());
+                data.put("name", edtLevel.getText().toString().trim());
+                data.put("prev_icon", prevIcon);
 
                 String result = rh.sendPostRequest(UPLOAD_URL, data);
 
@@ -161,68 +162,5 @@ public class AddModuleActivity extends AppCompatActivity {
 
         UploadImage ui = new UploadImage();
         ui.execute(bitmap);
-    }
-
-    private void loadLevels() {
-        final String url = Utils.host + "/levels";
-        Log.d("URL", url);
-//        tvLoggingIn.setVisibility(View.VISIBLE);
-        RequestQueue queue = Volley.newRequestQueue(AddModuleActivity.this);
-// prepare the Request
-        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // display response
-                        Log.d("Logresp", response);
-                        try {
-                            JSONArray arr = new JSONArray(response);
-                            setupJsonArrayToList(arr);
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(AddModuleActivity.this, R.layout.spinner_item, levelNames);
-                            spnLevel.setAdapter(adapter);
-                        } catch (JSONException ex) {
-                            Log.d("Json error", ex.getMessage());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddModuleActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> headers = new HashMap<>();
-                return headers;
-            }
-        };
-        ;
-
-// add it to the RequestQueue
-        queue.add(getRequest);
-    }
-
-    private void setupJsonArrayToList(JSONArray array) {
-        try {
-            levelIds = new ArrayList<>();
-            levelNames = new ArrayList<>();
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                levelIds.add(obj.getString("id"));
-                levelNames.add(obj.getString("name"));
-            }
-            Log.d("DERR",String.valueOf(levelNames.size()));
-        } catch (JSONException ex) {
-            Log.d("Jsonerr", ex.getMessage());
-        }
     }
 }

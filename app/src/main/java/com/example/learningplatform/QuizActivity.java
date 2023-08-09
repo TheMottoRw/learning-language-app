@@ -61,7 +61,7 @@ public class QuizActivity extends AppCompatActivity {
     }
     private void loadQuiz() {
         pgdialog.show();
-        final String url = Utils.host+"/quiz/module/1";
+        final String url = Utils.host+"/quiz/module/"+moduleId;
         Log.d("URL", url);
         RequestQueue queue = Volley.newRequestQueue(QuizActivity.this);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
@@ -168,11 +168,11 @@ public class QuizActivity extends AppCompatActivity {
                             SweetAlertDialog alert = new SweetAlertDialog(QuizActivity.this);
                             if(obj.getInt("marks")>(obj.getInt("total_marks")/2)){
                                 alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                alert.setContentText("Congratulation you have passed test with "+obj.getInt("marks") +" out of "+obj.getInt("total_marks"));
+                                alert.setContentText("Watsinze ku manota "+obj.getInt("marks") +"/"+obj.getInt("total_marks"));
                             }
                             else{
                                 alert.changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                alert.setContentText("You have failed test with "+obj.getInt("marks") +" out of "+obj.getInt("total_marks"));
+                                alert.setContentText("Watsinzwe ku manota "+obj.getInt("marks") +"/"+obj.getInt("total_marks"));
                             }
                             alert.setConfirmButton("Close", new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
