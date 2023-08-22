@@ -108,10 +108,13 @@ public class UpdateLevelActivity extends AppCompatActivity {
     }
 
     public String getStringImage(Bitmap bmp) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        String encodedImage = "";
+        if(bmp!=null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        }
         return encodedImage;
     }
 
@@ -136,7 +139,8 @@ public class UpdateLevelActivity extends AppCompatActivity {
                     Log.d("ResErr", s);
                     JSONObject obj = new JSONObject(s);
                     Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_LONG).show();
-
+                    if (obj.getBoolean("status"))
+                        finish();
                 } catch (JSONException ex) {
                     Log.d("Jsonerr", ex.getMessage());
                 }
@@ -146,7 +150,7 @@ public class UpdateLevelActivity extends AppCompatActivity {
             protected String doInBackground(Bitmap... params) {
                 Bitmap bitmap = params[0];
                 String uploadImage = getStringImage(bitmap);
-                Log.d("StrImageCount", String.valueOf(uploadImage.length()));
+                Log.d("StrImageCount", String.valueOf(uploadImage));
 
                 HashMap<String, String> data = new HashMap<>();
 

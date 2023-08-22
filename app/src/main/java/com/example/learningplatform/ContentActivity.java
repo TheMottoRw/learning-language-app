@@ -101,9 +101,6 @@ public class ContentActivity extends AppCompatActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-//                Toast.makeText(getApplicationContext(),
-//                        expandableListTitle.get(groupPosition) + " List Expanded.",
-//                        Toast.LENGTH_SHORT).show();
                 Log.d("GPOS", "G " + expandableListIds.get(groupPosition));
                 if (Utils.getUser(ContentActivity.this, "user_type").equals("Learner"))
                     enrollContent(expandableListIds.get(groupPosition));
@@ -114,9 +111,6 @@ public class ContentActivity extends AppCompatActivity {
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-//                Toast.makeText(getApplicationContext(),
-//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-//                        Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -125,14 +119,7 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-//                Toast.makeText(
-//                        getApplicationContext(),
-//                        expandableListTitle.get(groupPosition)
-//                                + " -> "
-//                                + expandableListDetail.get(
-//                                expandableListTitle.get(groupPosition)).get(
-//                                childPosition), Toast.LENGTH_SHORT
-//                ).show();
+
                 Intent intent = new Intent(ContentActivity.this,UpdateContentActivity.class);
                 intent.putExtra("id",expandableListIds.get(childPosition));
                 intent.putExtra("eng_word",expandableListTitle.get(groupPosition));
@@ -146,36 +133,6 @@ public class ContentActivity extends AppCompatActivity {
         });
 
 
-    }
-
-    private void initArray() {
-        try {
-            array = new JSONArray();
-            edp = new ExpandableListDataPump();
-            List<String> arr = new ArrayList<>();
-            List<String> arrk = new ArrayList<>();
-
-            arr.add("Hello");
-            arr.add("Good morning");
-            arr.add("Good afternoon");
-            arr.add("Good bye my friend");
-            arr.add("I was missing you");
-
-            arrk.add("Muraho");
-            arrk.add("Mwaramutse");
-            arrk.add("Mwiriwe");
-            arrk.add("Mwirirwe");
-            arrk.add("Nari ngukumbuye");
-            for (int i = 0; i < arr.size(); i++) {
-                JSONObject obj = new JSONObject();
-                obj.put("eng_word", arr.get(i));
-                obj.put("kiny_word", arrk.get(i));
-                array.put(obj);
-            }
-            edp.setData(array);
-        } catch (JSONException ex) {
-            Log.d("JSONErr", ex.getMessage());
-        }
     }
 
     private void loadContents() {
@@ -364,7 +321,7 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void loadLearningStats() {
-        final String url = Utils.host + "/stats/hascompleted?module=" + moduleId + "&learner=" + Utils.getUser(ContentActivity.this, "id");
+        final String url = Utils.host + "/stats/progress?module=" + moduleId + "&learner=" + Utils.getUser(ContentActivity.this, "id");
         Log.d("URL", url);
 //        tvLoggingIn.setVisibility(View.VISIBLE);
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -377,61 +334,7 @@ public class ContentActivity extends AppCompatActivity {
                         Log.d("Logresp", response);
                         try {
                             JSONObject obj = new JSONObject(response);
-                            if (obj.getBoolean("has_done_module")) {
-                                btnQuiz.setVisibility(View.GONE);
-                            } else {
-                                btnQuiz.setVisibility(View.VISIBLE);
-                            }
-
-                        } catch (JSONException ex) {
-                            Log.d("Json error", ex.getMessage());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        pgdialog.dismiss();
-                        Toast.makeText(ContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> headers = new HashMap<>();
-                return headers;
-            }
-        };
-        ;
-
-// add it to the RequestQueue
-        queue.add(getRequest);
-    }
-
-    private void hasDoneModule() {
-        final String url = Utils.host + "/stats/hasdone?module=" + moduleId + "&learner=" + Utils.getUser(ContentActivity.this, "id");
-        pgdialog.show();
-        Log.d("URL", url);
-//        tvLoggingIn.setVisibility(View.VISIBLE);
-        RequestQueue queue = Volley.newRequestQueue(this);
-// prepare the Request
-        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // display response
-                        pgdialog.dismiss();
-                        Log.d("Logresp", response);
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("has_done_module")) {
+                            if (obj.getInt("percentage")==100 && !obj.getBoolean("is_completed")) {
                                 btnQuiz.setVisibility(View.VISIBLE);
                             } else {
                                 btnQuiz.setVisibility(View.GONE);
@@ -472,7 +375,10 @@ public class ContentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadContents();
+        if(Utils.getUser(ContentActivity.this,"user_type").equals("Learner")) {
+            loadContents();
+            loadLearningStats();
+        }
     }
 
     @Override

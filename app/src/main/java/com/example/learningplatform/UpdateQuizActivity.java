@@ -83,9 +83,9 @@ public class UpdateQuizActivity extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             Snackbar.make(edtQuestion,obj.getString("message"), Snackbar.LENGTH_SHORT).show();
-                            edtQuestion.setText("");
-                            edtChoices.setText("");
-                            edtAnswer.setText("");
+                            if (obj.getBoolean("status"))
+                                finish();
+
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }

@@ -53,9 +53,12 @@ public class ModulesActivity extends AppCompatActivity {
             if (Utils.getUser(ModulesActivity.this, "user_type").equals("Admin")) {
                 level = getIntent().getStringExtra("id");
                 moduleUrl = Utils.host + "/module/level/" + level;
-            } else {
+            } else if(Utils.getUser(ModulesActivity.this, "user_type").equals("Learner")){
                 fab.setVisibility(View.GONE);
                 moduleUrl = Utils.host+"/modules/user/stats?learner="+Utils.getUser(ModulesActivity.this, "id");
+            }else{
+                fab.setVisibility(View.GONE);
+                moduleUrl = Utils.host+"/modules";
             }
         }
         fab.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +145,7 @@ public class ModulesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         if(Utils.getUser(ModulesActivity.this,"user_type").equals("Admin")){
             getMenuInflater().inflate(R.menu.menu_admin, menu);
-        }else{
+        }else if(Utils.getUser(ModulesActivity.this,"user_type").equals("Learner")){
             getMenuInflater().inflate(R.menu.menu_learner, menu);
         }
         return super.onCreateOptionsMenu(menu);

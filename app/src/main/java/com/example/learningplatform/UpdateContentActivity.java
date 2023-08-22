@@ -28,10 +28,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateContentActivity extends AppCompatActivity {
-    private EditText edtEng,edtKiny,edtExplanation;
+    private EditText edtEng, edtKiny, edtExplanation;
     private Button btnCreate;
     private ProgressDialog pgdialog;
-    private String moduleId,contentId;
+    private String moduleId, contentId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,18 +57,19 @@ public class UpdateContentActivity extends AppCompatActivity {
             }
         });
     }
+
     private void save() {
-        final String url = Utils.host + "/content/"+contentId;
+        final String url = Utils.host + "/content/" + contentId;
         JSONObject body = new JSONObject();
         Log.d("URL", url);
         pgdialog.show();
-        try{
-            body.put("eng_word",edtEng.getText().toString().trim());
-            body.put("kiny_word",edtKiny.getText().toString().trim());
-            body.put("explanation",edtExplanation.getText().toString().trim());
-            body.put("module",moduleId);
-        }catch (JSONException ex){
-            Log.d("JSONErr",ex.getMessage());
+        try {
+            body.put("eng_word", edtEng.getText().toString().trim());
+            body.put("kiny_word", edtKiny.getText().toString().trim());
+            body.put("explanation", edtExplanation.getText().toString().trim());
+            body.put("module", moduleId);
+        } catch (JSONException ex) {
+            Log.d("JSONErr", ex.getMessage());
         }
         RequestQueue queue = Volley.newRequestQueue(this);
 // prepare the Request
@@ -80,10 +82,9 @@ public class UpdateContentActivity extends AppCompatActivity {
                         Log.d("Logresp", response);
                         try {
                             JSONObject obj = new JSONObject(response);
-                            Snackbar.make(edtEng,obj.getString("message"), Snackbar.LENGTH_SHORT).show();
-                            edtEng.setText("");
-                            edtKiny.setText("");
-                            edtExplanation.setText("");
+                            Snackbar.make(edtEng, obj.getString("message"), Snackbar.LENGTH_SHORT).show();
+                            if (obj.getBoolean("status"))
+                                finish();
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
@@ -110,10 +111,12 @@ public class UpdateContentActivity extends AppCompatActivity {
                 final Map<String, String> headers = new HashMap<>();
                 return headers;
             }
+
             @Override
             public byte[] getBody() {
                 return body.toString().getBytes();
             }
+
             @Override
             public String getBodyContentType() {
                 return "application/json";

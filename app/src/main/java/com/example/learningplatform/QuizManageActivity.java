@@ -119,4 +119,11 @@ public class QuizManageActivity extends AppCompatActivity {
 // add it to the RequestQueue
         queue.add(getRequest);
     }
+
+
+
+    protected void onResume() {
+        super.onResume();
+        loadQuiz();
+    }
 }

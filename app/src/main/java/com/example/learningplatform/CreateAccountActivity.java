@@ -83,9 +83,12 @@ public class CreateAccountActivity extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             Toast.makeText(CreateAccountActivity.this, obj.getString("message"), Toast.LENGTH_SHORT).show();
-                            edtName.setText("");
-                            edtEmail.setText("");
-                            edtPassword.setText("");
+                            if(obj.getBoolean("status")) {
+                                edtName.setText("");
+                                edtEmail.setText("");
+                                edtPassword.setText("");
+                                finish();
+                            }
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }

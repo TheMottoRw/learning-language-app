@@ -6,7 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.learningplatform.ContentActivity"
     android:id="@+id/container"
-    android:padding="20dp">
+    android:paddingHorizontal="20dp"
+    android:paddingBottom="10dp">
+    <TextView
+        android:id="@+id/ikeshamvugoHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:textSize="24sp"
+        android:text="NTIBAVUGA / BAVUGA"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        />
     <Button
         android:id="@+id/btnQuiz"
         android:layout_width="match_parent"
@@ -58,6 +70,7 @@
         app:tint="@color/white"
         app:layout_constraintBottom_toTopOf="@id/fab"
         app:layout_constraintEnd_toEndOf="@id/expandableListView"
+        android:contentDescription="@string/upload_content"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -73,5 +86,6 @@
         app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/expandableListView"
         app:layout_constraintEnd_toEndOf="@id/expandableListView"
+        android:contentDescription="@string/add"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

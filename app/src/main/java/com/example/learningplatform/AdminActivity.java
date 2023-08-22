@@ -30,7 +30,7 @@ public class AdminActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminActivity.this,AddLevel.class));
+                startActivity(new Intent(AdminActivity.this, AddLevel.class));
             }
         });
         getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, new LearnersFragment()).commit();
@@ -40,12 +40,12 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
-                if(itemId==R.id.action_learners){
+                if (itemId == R.id.action_learners) {
                     navigationView.getMenu().getItem(0).setChecked(true);
                     fab.setVisibility(View.GONE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LearnersFragment()).commit();
                 }
-                if(itemId==R.id.action_levels){
+                if (itemId == R.id.action_levels) {
                     navigationView.getMenu().getItem(1).setChecked(true);
                     fab.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LevelsFragment()).commit();
@@ -53,7 +53,7 @@ public class AdminActivity extends AppCompatActivity {
                 if (itemId == R.id.action_logout) {
                     Utils.logout(AdminActivity.this);
                     finish();
-                    startActivity(new Intent(AdminActivity.this,Login.class));
+                    startActivity(new Intent(AdminActivity.this, Login.class));
                     return true;
                 }
 
@@ -82,4 +82,14 @@ public class AdminActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationView.getMenu().getItem(1).setChecked(true);
+        fab.setVisibility(View.VISIBLE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LevelsFragment()).commit();
+
+    }
+
 }

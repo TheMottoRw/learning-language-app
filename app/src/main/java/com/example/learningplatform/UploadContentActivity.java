@@ -113,6 +113,7 @@ public class UploadContentActivity extends AppCompatActivity {
                             JSONObject res = new JSONObject(response);
                             Log.d("Status",res.getString("status"));
                             Toast.makeText(UploadContentActivity.this,res.getString("message"),Toast.LENGTH_SHORT).show();
+                            finish();
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }

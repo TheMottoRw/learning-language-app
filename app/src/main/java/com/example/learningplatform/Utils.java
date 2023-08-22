@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
-    public static String host = "http://192.168.136.120:3000";
+    public static String host = "http://192.168.8.109:3000";
 
     public void setUserSession(Context context, JSONObject obj){
         try{

@@ -79,6 +79,7 @@ public class AddQuizActivity extends AppCompatActivity {
                             edtQuestion.setText("");
                             edtChoices.setText("");
                             edtAnswer.setText("");
+                            finish();
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
