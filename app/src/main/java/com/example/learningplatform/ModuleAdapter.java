@@ -47,9 +47,9 @@ public class ModuleAdapter extends ArrayAdapter<ModuleModel> {
         moduleName.setText(moduleModel.getModuleName());
 
         if(moduleModel.getImage().startsWith("http"))
-            Glide.with(ctx).load(moduleModel.getImage()).into(moduleIcon);
+            Glide.with(ctx).load(moduleModel.getImage()).into(moduleIcon).onLoadFailed(ctx.getDrawable(R.drawable.baseline_menu_book_24));
         else
-            Glide.with(ctx).load(Utils.host+"/images/"+moduleModel.getImage()).into(moduleIcon);
+            Glide.with(ctx).load(Utils.host+"/images/"+moduleModel.getImage()).into(moduleIcon).onLoadFailed(ctx.getDrawable(R.drawable.baseline_menu_book_24));
 
 
         Log.d("UserType",Utils.getUser(ctx,"user_type"));

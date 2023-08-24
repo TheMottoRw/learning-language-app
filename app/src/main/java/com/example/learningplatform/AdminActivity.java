@@ -50,6 +50,11 @@ public class AdminActivity extends AppCompatActivity {
                     fab.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new LevelsFragment()).commit();
                 }
+                if (itemId == R.id.action_report) {
+                    navigationView.getMenu().getItem(2).setChecked(true);
+                    fab.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ReportFragment()).commit();
+                }
                 if (itemId == R.id.action_logout) {
                     Utils.logout(AdminActivity.this);
                     finish();

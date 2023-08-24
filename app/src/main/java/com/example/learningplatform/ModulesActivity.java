@@ -40,6 +40,8 @@ public class ModulesActivity extends AppCompatActivity {
     private ArrayList<ModuleModel> moduleModelList;
     private String level = "", moduleUrl = Utils.host + "/modules";
     private LinearLayout lnyLayout;
+    private Intent intent;
+    private JSONArray array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,39 @@ public class ModulesActivity extends AppCompatActivity {
                 moduleUrl = Utils.host + "/module/level/" + level;
             } else if(Utils.getUser(ModulesActivity.this, "user_type").equals("Learner")){
                 fab.setVisibility(View.GONE);
-                moduleUrl = Utils.host+"/modules/user/stats?learner="+Utils.getUser(ModulesActivity.this, "id");
+                intent = getIntent();
+                if(intent.hasExtra("action")){
+                    Log.d("HasAction","Module has action");
+                    try{
+                        JSONObject obj = new JSONObject(intent.getStringExtra("modules"));
+                        switch (intent.getStringExtra("action")){
+                            case "enrolled":
+                                array = obj.getJSONArray("enrolled");break;
+                            case "completed":
+                                array = obj.getJSONArray("completed");break;
+                            case "remaining":
+                                array = obj.getJSONArray("enrolled_not_completed");break;
+                            default:
+                                Log.d("NoAction","No choice found");
+                                array = new JSONArray();
+                                break;
+                        }
+                        Log.d("ArrSize","Passed Len:: "+array.length());
+                        if(array.length()==0){
+                            lnyLayout.setVisibility(View.VISIBLE);
+                        }else{
+                            lnyLayout.setVisibility(View.GONE);
+                            setupJsonArrayToModuleModel(array);
+                            moduleAdapter = new ModuleAdapter(ModulesActivity.this, moduleModelList);
+                            gridView.setAdapter(moduleAdapter);
+                        }
+                    }catch (JSONException ex){
+                        Log.d("jsonerr00",ex.getMessage());
+                    }
+                }else {
+                    moduleUrl = Utils.host + "/modules/user/stats?learner=" + Utils.getUser(ModulesActivity.this, "id");
+                    loadModules();
+                }
             }else{
                 fab.setVisibility(View.GONE);
                 moduleUrl = Utils.host+"/modules";
@@ -67,7 +101,53 @@ public class ModulesActivity extends AppCompatActivity {
                 startActivity(new Intent(ModulesActivity.this, AddModuleActivity.class));
             }
         });
-        loadModules();
+
+    }
+    private void moduleDataLoader(){
+        if (!Utils.getUser(ModulesActivity.this, "id").equals("0")) {
+            if (Utils.getUser(ModulesActivity.this, "user_type").equals("Admin")) {
+                level = getIntent().getStringExtra("id");
+                moduleUrl = Utils.host + "/module/level/" + level;
+            } else if(Utils.getUser(ModulesActivity.this, "user_type").equals("Learner")){
+                fab.setVisibility(View.GONE);
+                intent = getIntent();
+                if(intent.hasExtra("action")){
+                    Log.d("HasAction","Module has action");
+                    try{
+                        JSONObject obj = new JSONObject(intent.getStringExtra("modules"));
+                        switch (intent.getStringExtra("action")){
+                            case "enrolled":
+                                array = obj.getJSONArray("enrolled");break;
+                            case "completed":
+                                array = obj.getJSONArray("completed");break;
+                            case "remaining":
+                                array = obj.getJSONArray("enrolled_not_completed");break;
+                            default:
+                                Log.d("NoAction","No choice found");
+                                array = new JSONArray();
+                                break;
+                        }
+                        Log.d("ArrSize","Passed Len:: "+array.length());
+                        if(array.length()==0){
+                            lnyLayout.setVisibility(View.VISIBLE);
+                        }else{
+                            lnyLayout.setVisibility(View.GONE);
+                            setupJsonArrayToModuleModel(array);
+                            moduleAdapter = new ModuleAdapter(ModulesActivity.this, moduleModelList);
+                            gridView.setAdapter(moduleAdapter);
+                        }
+                    }catch (JSONException ex){
+                        Log.d("jsonerr00",ex.getMessage());
+                    }
+                }else {
+                    moduleUrl = Utils.host + "/modules/user/stats?learner=" + Utils.getUser(ModulesActivity.this, "id");
+                    loadModules();
+                }
+            }else{
+                fab.setVisibility(View.GONE);
+                moduleUrl = Utils.host+"/modules";
+            }
+        }
 
     }
 
@@ -81,12 +161,12 @@ public class ModulesActivity extends AppCompatActivity {
                         // display response
                         Log.d("Logresp", response);
                         try {
-                            JSONArray arr = new JSONArray(response);
-                            if (arr.length() == 0)
+                            array = new JSONArray(response);
+                            if (array.length() == 0)
                                 lnyLayout.setVisibility(View.VISIBLE);
                             else
                                 lnyLayout.setVisibility(View.GONE);
-                            setupJsonArrayToModuleModel(arr);
+                            setupJsonArrayToModuleModel(array);
                             moduleAdapter = new ModuleAdapter(ModulesActivity.this, moduleModelList);
                             gridView.setAdapter(moduleAdapter);
                         } catch (JSONException ex) {
@@ -125,12 +205,12 @@ public class ModulesActivity extends AppCompatActivity {
             try {
                 JSONObject obj = array.getJSONObject(i);
                 if(Utils.getUser(ModulesActivity.this,"user_type").equals("Learner")) {
-                    moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"), obj.getString("is_enrolled"), obj.getString("marks"), obj.getString("marks_total"), obj.getString("is_completed")));
+                    moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"), obj.getString("is_enrolled"), obj.getString("is_enrolled").equals("enrolled")?obj.getString("marks"):"0", obj.getString("is_enrolled").equals("enrolled")?obj.getString("marks_total"):"0", obj.getString("is_enrolled").equals("enrolled")?obj.getString("is_completed"):"0"));
                 }else{
                     moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"),"","","",""));
                 }
             } catch (JSONException e) {
-                Log.d("jsonerr",e.getMessage());
+                Log.d("jsonerr01",e.getMessage());
             }
 
         }
@@ -138,7 +218,8 @@ public class ModulesActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-        loadModules();
+//        loadModules();
+        moduleDataLoader();
     }
 
     @Override

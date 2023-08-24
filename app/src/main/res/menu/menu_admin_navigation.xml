@@ -9,6 +9,10 @@
         android:icon="@drawable/baseline_stairs_24"
         android:title="@string/levels" />
     <item
+        android:id="@+id/action_report"
+        android:icon="@drawable/baseline_insert_drive_file_24"
+        android:title="@string/report" />
+    <item
         android:id="@+id/action_logout"
         android:icon="@drawable/baseline_logout_24"
         android:title="@string/logout"

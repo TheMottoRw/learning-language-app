@@ -42,6 +42,7 @@ public class Profile extends AppCompatActivity {
     private String level = "", url;
     private LinearLayout lnyLayout;
     private TextView tvEnrolled,tvCompleted,tvRemaining;
+    private JSONObject obj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,34 @@ public class Profile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Umwirondoro: "+Utils.getUser(Profile.this,"name"));
 
+        tvEnrolled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, ModulesActivity.class);
+                intent.putExtra("action","enrolled");
+                intent.putExtra("modules",obj.toString());
+                startActivity(intent);
+            }
+        });
+        tvCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, ModulesActivity.class);
+                intent.putExtra("action","completed");
+                intent.putExtra("modules",obj.toString());
+                startActivity(intent);
+            }
+        });
+        tvRemaining.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Profile.this, ModulesActivity.class);
+                intent.putExtra("action","remaining");
+                intent.putExtra("modules",obj.toString());
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void loadStats() {
@@ -69,13 +98,13 @@ public class Profile extends AppCompatActivity {
                         // display response
                         Log.d("Logresp", response);
                         try {
-                            JSONObject obj = new JSONObject(response);
-                            JSONArray arr = obj.getJSONArray("completed");
-                            setupJsonArrayToModuleModel(arr);
+                            obj = new JSONObject(response);
+                            JSONArray array = obj.getJSONArray("completed");
+                            setupJsonArrayToModuleModel(array);
 
                             tvEnrolled.setText(obj.getString("enrolled_len"));
                             tvCompleted.setText(obj.getString("completed_len"));
-                            tvRemaining.setText(String.valueOf(obj.getInt("enrolled_len")-obj.getInt("completed_len")));
+                            tvRemaining.setText(obj.getString("enrolled_not_completed_len"));
                             profileAdapter = new ProfileAdapter(Profile.this, moduleModelList);
                             gridView.setAdapter(profileAdapter);
                         } catch (JSONException ex) {
@@ -114,7 +143,7 @@ public class Profile extends AppCompatActivity {
             try {
                 JSONObject obj = array.getJSONObject(i);
                 if(Utils.getUser(Profile.this,"user_type").equals("Learner")) {
-                    moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"), obj.getString("is_enrolled"), obj.getString("marks"), obj.getString("marks_total"), obj.getString("is_completed")));
+                    moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"), obj.getString("is_enrolled"), obj.getString("is_enrolled").equals("enrolled")?obj.getString("marks"):"0", obj.getString("is_enrolled").equals("enrolled")?obj.getString("marks_total"):"0", obj.getString("is_enrolled").equals("enrolled")?obj.getString("is_completed"):"0"));
                 }else{
                     moduleModelList.add(new ModuleModel(obj.getString("id"), obj.getString("level"), obj.getString("name"), obj.getString("icon"),"","","",""));
                 }
