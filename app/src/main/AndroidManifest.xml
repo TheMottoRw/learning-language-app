@@ -19,6 +19,9 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
+            android:name="com.example.learningplatform.ProfileModuleStats"
+            android:exported="false" />
+        <activity
             android:name="com.example.learningplatform.UpdateLevelActivity"
             android:exported="false" />
         <activity

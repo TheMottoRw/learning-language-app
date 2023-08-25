@@ -15,35 +15,37 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" android:visibility="gone">
+            android:orientation="horizontal"
+            android:visibility="visible"
+            >
 
             <EditText
                 android:layout_width="140dp"
                 android:id="@+id/start"
                 android:hint="@string/from"
-                android:layout_marginTop="20dp"
                 style="@style/edit_text_style"
                 android:inputType="date"
                 android:drawableStart="@drawable/baseline_date_range_24"
                 android:textSize="14sp"
+                android:background="@color/dark_green"
                 />
             <EditText
                 android:layout_width="140dp"
                 android:id="@+id/to"
                 android:hint="@string/to"
-                android:layout_marginTop="20dp"
                 style="@style/edit_text_style"
                 android:inputType="date"
                 android:layout_marginLeft="10dp"
                 android:drawableStart="@drawable/baseline_date_range_24"
                 android:textSize="14sp"
+                android:background="@color/dark_green"
                 />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="65dp"
                 android:text="Go"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="-5dp"
                 android:textSize="20sp"
                 android:backgroundTint="@color/button_green"
                 app:cornerRadius="30dp"

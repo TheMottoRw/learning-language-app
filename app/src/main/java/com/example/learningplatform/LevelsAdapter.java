@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.learn.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,9 +56,11 @@ public class LevelsAdapter extends RecyclerView.Adapter<LevelsAdapter.MyViewHold
             holder.name.setText(currentObj.getString("name"));
 
             if(currentObj.getString("icon").startsWith("http"))
-                Glide.with(ctx).load(currentObj.getString("icon")).into(holder.icon);
+                Picasso.get().load(currentObj.getString("icon")).into(holder.icon);
+//                Glide.with(ctx).load(currentObj.getString("icon")).into(holder.icon);
             else
-                Glide.with(ctx).load(Utils.host+"/images/"+currentObj.getString("icon")).into(holder.icon);
+            Picasso.get().load(Utils.host + "/images/" + currentObj.getString("icon")).into(holder.icon);
+//                Glide.with(ctx).load(Utils.host+"/images/"+currentObj.getString("icon")).into(holder.icon);
             holder.lnlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

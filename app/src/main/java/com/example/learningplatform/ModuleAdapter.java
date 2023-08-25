@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.learn.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -46,13 +48,19 @@ public class ModuleAdapter extends ArrayAdapter<ModuleModel> {
 
         moduleName.setText(moduleModel.getModuleName());
 
-        if(moduleModel.getImage().startsWith("http"))
-            Glide.with(ctx).load(moduleModel.getImage()).into(moduleIcon).onLoadFailed(ctx.getDrawable(R.drawable.baseline_menu_book_24));
-        else
-            Glide.with(ctx).load(Utils.host+"/images/"+moduleModel.getImage()).into(moduleIcon).onLoadFailed(ctx.getDrawable(R.drawable.baseline_menu_book_24));
+        try {
+            Glide.with(ctx).clear(moduleIcon);
+            if (moduleModel.getImage().startsWith("http"))
+                Picasso.get().load(moduleModel.getImage()).into(moduleIcon);
+//                Glide.with(ctx).load(moduleModel.getImage()).into(moduleIcon).onLoadFailed(ctx.getDrawable(R.drawable.baseline_menu_book_24));
+            else {
+                Picasso.get().load(Utils.host + "/images/" + moduleModel.getImage()).into(moduleIcon);
+//                Glide.with(ctx).load(Utils.host + "/images/" + moduleModel.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(moduleIcon).onLoadFailed(ctx.getDrawable(R.drawable.baseline_menu_book_24));
+            }
 
-
-        Log.d("UserType",Utils.getUser(ctx,"user_type"));
+        }catch (Exception ex){
+            Log.d("GlideExc",ex.getMessage());
+        }
         if(Utils.getUser(ctx,"user_type").equals("Learner")) {
             if (moduleModel.getIsEnrolled().equals("enrolled")) {
                 moduleLockIcon.setVisibility(View.GONE);

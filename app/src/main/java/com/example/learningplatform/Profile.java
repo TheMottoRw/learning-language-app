@@ -88,7 +88,7 @@ public class Profile extends AppCompatActivity {
     }
 
     private void loadStats() {
-        url = Utils.host + "/stats/completed?learner="+Utils.getUser(Profile.this,"id");
+        url = Utils.host + "/stats/user/report?learner="+Utils.getUser(Profile.this,"id");
         Log.d("URL", url);
         RequestQueue queue = Volley.newRequestQueue(Profile.this);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,

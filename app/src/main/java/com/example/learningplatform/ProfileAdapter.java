@@ -53,9 +53,6 @@ public class ProfileAdapter extends ArrayAdapter<ModuleModel> {
             Glide.with(ctx).load(Utils.host+"/images/"+moduleModel.getImage()).into(moduleIcon);
 
 
-        Log.d("UserType",Utils.getUser(ctx,"user_type"));
-
-
         return listitemView;
     }
 }
