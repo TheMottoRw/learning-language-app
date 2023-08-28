@@ -57,9 +57,9 @@ public class AddContentActivity extends AppCompatActivity {
         Log.d("URL", url);
         pgdialog.show();
         try{
-            body.put("eng_word",edtEng.getText().toString().trim());
-            body.put("kiny_word",edtKiny.getText().toString().trim());
-            body.put("explanation",edtExplanation.getText().toString().trim());
+            body.put("ntibavuga",edtEng.getText().toString().trim());
+            body.put("bavuga",edtKiny.getText().toString().trim());
+            body.put("ubusobanuro",edtExplanation.getText().toString().trim());
             body.put("module",moduleId);
         }catch (JSONException ex){
             Log.d("JSONErr",ex.getMessage());
@@ -76,9 +76,11 @@ public class AddContentActivity extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             Snackbar.make(edtEng,obj.getString("message"), Snackbar.LENGTH_SHORT).show();
-                            edtEng.setText("");
-                            edtKiny.setText("");
-                            edtExplanation.setText("");
+                            if(obj.getBoolean("status")) {
+                                edtEng.setText("");
+                                edtKiny.setText("");
+                                edtExplanation.setText("");
+                            }
                         } catch (JSONException ex) {
                             Log.d("Json error", ex.getMessage());
                         }
@@ -88,7 +90,7 @@ public class AddContentActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(AddContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddContentActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }

@@ -47,9 +47,9 @@ public class UpdateContentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         contentId = intent.getStringExtra("id");
         moduleId = intent.getStringExtra("module");
-        edtEng.setText(intent.getStringExtra("eng_word"));
-        edtKiny.setText(intent.getStringExtra("kiny_word"));
-        edtExplanation.setText(intent.getStringExtra("explanation"));
+        edtEng.setText(intent.getStringExtra("ntibavuga"));
+        edtKiny.setText(intent.getStringExtra("bavuga"));
+        edtExplanation.setText(intent.getStringExtra("ubusobanuro"));
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,9 +64,9 @@ public class UpdateContentActivity extends AppCompatActivity {
         Log.d("URL", url);
         pgdialog.show();
         try {
-            body.put("eng_word", edtEng.getText().toString().trim());
-            body.put("kiny_word", edtKiny.getText().toString().trim());
-            body.put("explanation", edtExplanation.getText().toString().trim());
+            body.put("ntibavuga", edtEng.getText().toString().trim());
+            body.put("bavuga", edtKiny.getText().toString().trim());
+            body.put("ubusobanuro", edtExplanation.getText().toString().trim());
             body.put("module", moduleId);
         } catch (JSONException ex) {
             Log.d("JSONErr", ex.getMessage());
@@ -94,7 +94,7 @@ public class UpdateContentActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(UpdateContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UpdateContentActivity.this, "SHari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="visible">
         <ImageView
             android:id="@+id/imgNoContent"
             android:layout_width="match_parent"
@@ -32,7 +32,8 @@
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2">
+        android:numColumns="2"
+        android:visibility="visible">
 
     </GridView>
 

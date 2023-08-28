@@ -51,7 +51,7 @@ public class ModulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modules);
         imgNoContent = findViewById(R.id.imgNoContent);
-//        Glide.with(this).load(R.drawable.congrats).into(imgNoContent);
+        Glide.with(this).load(R.drawable.congratulation).into(imgNoContent);
         gridView = findViewById(R.id.gridView);
         fab = findViewById(R.id.fab);
         lnyLayout = findViewById(R.id.lnyLayout);
@@ -60,6 +60,7 @@ public class ModulesActivity extends AppCompatActivity {
             if (Utils.getUser(ModulesActivity.this, "user_type").equals("Admin")) {
                 level = getIntent().getStringExtra("id");
                 moduleUrl = Utils.host + "/module/level/" + level;
+                loadModules();
             } else if(Utils.getUser(ModulesActivity.this, "user_type").equals("Learner")){
                 fab.setVisibility(View.GONE);
                 intent = getIntent();
@@ -100,6 +101,7 @@ public class ModulesActivity extends AppCompatActivity {
                 moduleUrl = Utils.host+"/modules";
             }
         }
+        Log.d("JSURL",moduleUrl);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,7 +184,7 @@ public class ModulesActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ModulesActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ModulesActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }

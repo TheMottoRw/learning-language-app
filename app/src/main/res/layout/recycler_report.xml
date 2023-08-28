@@ -107,4 +107,8 @@
                     android:text="0"/>
             </LinearLayout>
         </GridLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/colorAccent"/>
 </LinearLayout>

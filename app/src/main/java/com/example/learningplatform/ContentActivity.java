@@ -122,9 +122,9 @@ public class ContentActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ContentActivity.this,UpdateContentActivity.class);
                 intent.putExtra("id",expandableListIds.get(childPosition));
-                intent.putExtra("eng_word",expandableListTitle.get(groupPosition));
-                intent.putExtra("kiny_word",expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
-                intent.putExtra("explanation",expandableListExplanations.get(groupPosition));
+                intent.putExtra("ntibavuga",expandableListTitle.get(groupPosition));
+                intent.putExtra("bavuga",expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition));
+                intent.putExtra("ubusobanuro",expandableListExplanations.get(groupPosition));
                 intent.putExtra("module",moduleId);
                 startActivity(intent);
                 Toast.makeText(ContentActivity.this,"ID:"+expandableListIds.get(groupPosition),Toast.LENGTH_SHORT).show();
@@ -176,7 +176,7 @@ public class ContentActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(ContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContentActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }
@@ -349,7 +349,7 @@ public class ContentActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(ContentActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContentActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }
@@ -378,6 +378,8 @@ public class ContentActivity extends AppCompatActivity {
         if(Utils.getUser(ContentActivity.this,"user_type").equals("Learner")) {
             loadContents();
             loadLearningStats();
+        }else{
+            loadContents();
         }
     }
 

@@ -24,12 +24,12 @@
             android:textSize="24sp"/>
         <EditText
             android:id="@+id/edtEngWord"
-            android:hint="@string/eng_word"
+            android:hint="@string/ntibavuga"
             android:layout_marginTop="30dp"
             style="@style/edit_text_style"/>
         <EditText
             android:id="@+id/edtKinyWord"
-            android:hint="@string/kiny_word"
+            android:hint="@string/bavuga"
             android:layout_marginTop="30dp"
             style="@style/edit_text_style"/>
         <EditText

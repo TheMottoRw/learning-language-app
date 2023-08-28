@@ -122,7 +122,7 @@ public class UploadQuizActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(UploadQuizActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadQuizActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }

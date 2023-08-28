@@ -25,8 +25,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_level">Ongeramo Ikiciro</string>
     <string name="level_name">Ikiciro</string>
-    <string name="eng_word">Ntibavuga</string>
-    <string name="kiny_word">Bavuga</string>
+    <string name="ntibavuga">Ntibavuga</string>
+    <string name="bavuga">Bavuga</string>
     <string name="new_word">Injiza ijambo ryo kwiga</string>
     <string name="brief_explanation">Ubusobanuro buke</string>
     <string name="upload_content">Shyiramo ibyigwa</string>
@@ -50,4 +50,9 @@
     <string name="report">Raporo</string>
     <string name="to">To</string>
     <string name="from">From</string>
+    <string-array name="reportFilters">
+        <item>Passed courses</item>
+        <item>Not yet passed any module</item>
+        <item>Login history</item>
+    </string-array>
 </resources>

@@ -46,14 +46,15 @@ import java.util.Map;
 public class ReportFragment extends Fragment {
     private Context context;
     private ProgressDialog pgdialog;
-    private EditText start,to;
-    private ArrayList<String> productNames,productIds;
+    private EditText start, to;
+    private ArrayList<String> filterTypes;
     private Button btnFilter;
-    private Spinner spnProducts,spnStockAction;
-    private DatePickerDialog datePickerDialog,startCalendarPicker,toCalendarPicker;
-    private Calendar dateSelected,startCalendar,toCalendar,newCalendar;
+    private Spinner spnFilterType;
+    private DatePickerDialog datePickerDialog, startCalendarPicker, toCalendarPicker;
+    private Calendar dateSelected, startCalendar, toCalendar, newCalendar;
     private LinearLayoutManager lnyManager;
     private RecyclerView recyclerView;
+
     public ReportFragment() {
         // Required empty public constructor
     }
@@ -70,29 +71,42 @@ public class ReportFragment extends Fragment {
         recyclerView.setLayoutManager(lnyManager);
         pgdialog.setMessage("Loading data...");
         pgdialog.setCancelable(false);
+        spnFilterType = view.findViewById(R.id.spnFilterType);
         start = view.findViewById(R.id.start);
         to = view.findViewById(R.id.to);
-        loadProductStockHistory();
+        loadReport();
         start.setEnabled(true);
         to.setEnabled(true);
         btnFilter = view.findViewById(R.id.btnFilter);
+        filterTypes = new ArrayList<>();
+        filterTypes.add("passed");
+        filterTypes.add("notpassed");
+        filterTypes.add("login_history");
         filterReport();
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStartDateTimeField() ;
+                setStartDateTimeField();
             }
         });
         to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setToDateTimeField(); ;
+                setToDateTimeField();
+                ;
+            }
+        });
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterReport();
             }
         });
 
         return view;
     }
+
     private void setStartDateTimeField() {
         startCalendar = Calendar.getInstance();
         newCalendar = startCalendar;
@@ -119,74 +133,7 @@ public class ReportFragment extends Fragment {
         toCalendarPicker.show();
     }
 
-    public void loadProductStockHistory(){
-        String url = Utils.host + "/history/product";
-        pgdialog.show();
-        Log.d("URL", url);
-        RequestQueue queue = Volley.newRequestQueue(context);
-// prepare the Request
-        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // display response
-                        pgdialog.dismiss();
-                        Log.d("Logresp", response);
-                        try {
-                            JSONArray arr = new JSONArray(response);
-                            if (arr.length() > 0) {
-                                prepareProductSpinner(arr);
-                                ArrayAdapter<String> adapter=new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,productNames);
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                                spnProducts.setAdapter(adapter);
-                            }
-                        } catch (JSONException ex) {
-                            Log.d("Json error", ex.getMessage());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        pgdialog.dismiss();
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> headers = new HashMap<>();
-                return headers;
-            }
-        };
-        ;
-
-// add it to the RequestQueue
-        queue.add(getRequest);
-    }
-    public void prepareProductSpinner(JSONArray array){
-        productIds = new ArrayList<String>();
-        productNames = new ArrayList<String>();
-        productIds.add(0,"0");
-        productNames.add(0,"All");
-        for(int i=0;i<array.length();i++ ){
-            try{
-                JSONObject obj = array.getJSONObject(i);
-                productIds.add(i+1,obj.getString("id"));
-                productNames.add(i+1,obj.getString("name"));
-            }catch (JSONException ex){
-                Log.d("jsonerr",ex.getMessage());
-            }
-        }
-    }
-    private void filterReport() {
+    private void loadReport() {
         final String url = Utils.host + "/stats/report";//?start="+start.getText().toString()+"&end="+to.getText().toString()+"&product="+productIds.get(spnProducts.getSelectedItemPosition())+"&stock_type="+String.valueOf(spnStockAction.getSelectedItemPosition()).trim();
         JSONObject body = new JSONObject();
         Log.d("URL", url);
@@ -210,7 +157,7 @@ public class ReportFragment extends Fragment {
                         Log.d("Logresp", response);
                         try {
                             JSONArray arr = new JSONArray(response);
-                            ReportAdapter adapter = new ReportAdapter(context,arr);
+                            ReportAdapter adapter = new ReportAdapter(context, arr);
                             recyclerView.setAdapter(adapter);
 
                         } catch (JSONException ex) {
@@ -222,7 +169,7 @@ public class ReportFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }
@@ -238,10 +185,92 @@ public class ReportFragment extends Fragment {
                 final Map<String, String> headers = new HashMap<>();
                 return headers;
             }
+
             @Override
             public byte[] getBody() {
                 return body.toString().getBytes();
             }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        ;
+
+// add it to the RequestQueue
+        queue.add(getRequest);
+    }
+
+    private void filterReport() {
+        String filterType = filterTypes.get(spnFilterType.getSelectedItemPosition());
+        final String url = Utils.host + "/stats/filtered/report?start=" + start.getText().toString() + "&end=" + to.getText().toString() + "&filterType=" + filterType;
+        JSONObject body = new JSONObject();
+        Log.d("URL", url);
+        pgdialog.show();
+        RequestQueue queue = Volley.newRequestQueue(context);
+// prepare the Request
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // display response
+                        pgdialog.dismiss();
+                        Log.d("Logresp", response);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            JSONArray arr = obj.getJSONArray("data");
+
+                            switch (filterType) {
+                                case "passed":
+                                    ReportPassedAdapter reportPassedAdapter = new ReportPassedAdapter(context, arr);
+                                    recyclerView.setAdapter(reportPassedAdapter);
+                                    break;
+                                case "notpassed":
+                                    ReportNotPassedAdapter notPassedAdapter = new ReportNotPassedAdapter(context, arr);
+                                    recyclerView.setAdapter(notPassedAdapter);
+                                    break;
+                                case "login_history":
+                                    ReportLoginHistoryAdapter reportLoginHistoryAdapter = new ReportLoginHistoryAdapter(context, arr);
+                                    recyclerView.setAdapter(reportLoginHistoryAdapter);
+                                    break;
+                                default:
+                                    ReportAdapter adapter = new ReportAdapter(context, arr);
+                                    recyclerView.setAdapter(adapter);
+                                    break;
+                            }
+
+                        } catch (JSONException ex) {
+                            Log.d("Json error", ex.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        pgdialog.dismiss();
+                        Toast.makeText(context, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
+                        Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() {
+                return body.toString().getBytes();
+            }
+
             @Override
             public String getBodyContentType() {
                 return "application/json";

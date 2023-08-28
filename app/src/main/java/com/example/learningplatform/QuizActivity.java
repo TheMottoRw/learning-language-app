@@ -116,7 +116,7 @@ public class QuizActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(QuizActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuizActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }
@@ -192,7 +192,7 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pgdialog.dismiss();
-                        Toast.makeText(QuizActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuizActivity.this, "Hari ibitagenze neza", Toast.LENGTH_SHORT).show();
                         Log.e("jsonerr", "JSON Error " + (error != null ? error.getMessage() : ""));
                     }
                 }

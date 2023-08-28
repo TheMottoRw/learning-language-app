@@ -23,14 +23,14 @@ public class ExpandableListDataPump {
             for (int i=0;i<data.length();i++){
                 JSONObject obj = data.getJSONObject(i);
                 ArrayList<String> arrayList = new ArrayList<String>();
-                if(!obj.getString("explanation").equals(""))
-                    arrayList.add(obj.getString("kiny_word")+"\n\n"+obj.getString("explanation"));
+                if(!obj.getString("ubusobanuro").equals(""))
+                    arrayList.add(obj.getString("bavuga")+"\n\n"+obj.getString("ubusobanuro"));
                 else
-                    arrayList.add(obj.getString("kiny_word"));
+                    arrayList.add(obj.getString("bavuga"));
                 ids.add(obj.getString("id"));
-                explanations.add(obj.getString("explanation"));
-                titles.add(obj.getString("eng_word"));
-                details.put(obj.getString("eng_word"),arrayList);
+                explanations.add(obj.getString("ubusobanuro"));
+                titles.add(obj.getString("ntibavuga"));
+                details.put(obj.getString("ntibavuga"),arrayList);
             }
         }catch (JSONException ex){
             Log.d("JSONErr",ex.getMessage());
