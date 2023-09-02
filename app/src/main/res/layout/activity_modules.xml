@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
         <ImageView
             android:id="@+id/imgNoContent"
             android:layout_width="match_parent"

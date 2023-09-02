@@ -168,6 +168,7 @@ public class QuizActivity extends AppCompatActivity {
                             SweetAlertDialog alert = new SweetAlertDialog(QuizActivity.this);
                             if(obj.getInt("marks")>(obj.getInt("total_marks")/2)){
                                 alert.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                alert.setCustomImage(R.drawable.congratulation);
                                 alert.setContentText("Watsinze ku manota "+obj.getInt("marks") +"/"+obj.getInt("total_marks"));
                             }
                             else{

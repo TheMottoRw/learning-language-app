@@ -51,7 +51,7 @@ public class ModulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modules);
         imgNoContent = findViewById(R.id.imgNoContent);
-        Glide.with(this).load(R.drawable.congratulation).into(imgNoContent);
+//        Glide.with(this).load(R.drawable.congratulation).into(imgNoContent);
         gridView = findViewById(R.id.gridView);
         fab = findViewById(R.id.fab);
         lnyLayout = findViewById(R.id.lnyLayout);
