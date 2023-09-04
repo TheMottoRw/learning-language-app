@@ -99,6 +99,7 @@ public class ModulesActivity extends AppCompatActivity {
             }else{
                 fab.setVisibility(View.GONE);
                 moduleUrl = Utils.host+"/modules";
+                loadModules();
             }
         }
         Log.d("JSURL",moduleUrl);
