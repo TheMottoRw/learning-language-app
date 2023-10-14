@@ -19,64 +19,64 @@
         tools:replace="android:icon"
         tools:targetApi="31">
         <activity
-            android:name="com.example.learningplatform.ProfileModuleStats"
+            android:name="com.example.cyberawareness.ProfileModuleStats"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.UpdateLevelActivity"
+            android:name="com.example.cyberawareness.UpdateLevelActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.UpdateModuleActivity"
+            android:name="com.example.cyberawareness.UpdateModuleActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.UpdateContentActivity"
+            android:name="com.example.cyberawareness.UpdateContentActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.UpdateQuizActivity"
+            android:name="com.example.cyberawareness.UpdateQuizActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.QuizManageActivity"
+            android:name="com.example.cyberawareness.QuizManageActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.AddQuizActivity"
+            android:name="com.example.cyberawareness.AddQuizActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.UploadQuizActivity"
+            android:name="com.example.cyberawareness.UploadQuizActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.Profile"
+            android:name="com.example.cyberawareness.Profile"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.QuizActivity"
+            android:name="com.example.cyberawareness.QuizActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.UploadContentActivity"
+            android:name="com.example.cyberawareness.UploadContentActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.Upload"
+            android:name="com.example.cyberawareness.Upload"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.AddContentActivity"
+            android:name="com.example.cyberawareness.AddContentActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.AddLevel"
+            android:name="com.example.cyberawareness.AddLevel"
             android:exported="false" />
         <activity
-            android:name="com.example.learningplatform.AdminActivity"
+            android:name="com.example.cyberawareness.AdminActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.AddModuleActivity"
+            android:name="com.example.cyberawareness.AddModuleActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.ImageUpload"
+            android:name="com.example.cyberawareness.ImageUpload"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.ModulesActivity"
+            android:name="com.example.cyberawareness.ModulesActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.CreateAccountActivity"
+            android:name="com.example.cyberawareness.CreateAccountActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.Splash"
+            android:name="com.example.cyberawareness.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,10 +85,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.learningplatform.ContentActivity"
+            android:name="com.example.cyberawareness.ContentActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.learningplatform.Login"
+            android:name="com.example.cyberawareness.Login"
             android:exported="true" />
     </application>
 

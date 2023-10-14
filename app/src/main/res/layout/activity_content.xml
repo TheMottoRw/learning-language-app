@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.learningplatform.ContentActivity"
+    tools:context="com.example.cyberawareness.ContentActivity"
     android:id="@+id/container"
     android:paddingHorizontal="20dp"
     android:paddingBottom="10dp">
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
         android:textSize="24sp"
-        android:text="NTIBAVUGA / BAVUGA"
+        android:text=""
         android:textStyle="bold"
         android:textColor="@color/black"
         android:gravity="center"

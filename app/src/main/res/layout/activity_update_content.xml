@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.learningplatform.UpdateContentActivity"
+    tools:context="com.example.cyberawareness.UpdateContentActivity"
     android:orientation="vertical"
     >
 
@@ -24,12 +24,12 @@
             android:textSize="24sp"/>
         <EditText
             android:id="@+id/edtEngWord"
-            android:hint="@string/ntibavuga"
+            android:hint="@string/title"
             android:layout_marginTop="30dp"
             style="@style/edit_text_style"/>
         <EditText
             android:id="@+id/edtKinyWord"
-            android:hint="@string/bavuga"
+            android:hint="@string/content"
             android:layout_marginTop="30dp"
             style="@style/edit_text_style"/>
         <EditText
